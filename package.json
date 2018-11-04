@@ -1,0 +1,39 @@
+{
+  "name": "youtrack-cli",
+  "version": "0.1.0",
+  "description": "cli for youtrack",
+  "main": "dist/youtrack.js",
+  "types": "dist/youtrack.d.ts",
+  "bin": {
+    "youtrack": "bin/youtrack.js",
+    "youtrack-project": "bin/youtrack-project.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "youtrack",
+    "cli",
+    "jetbrains",
+    "rest",
+    "api",
+    "issue",
+    "tracking"
+  ],
+  "author": "Shane Hofstetter",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "youtrack-rest-client": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/node": "^10.12.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ]
+}
