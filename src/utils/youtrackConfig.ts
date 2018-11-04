@@ -2,6 +2,7 @@ import {YoutrackLoginOptions, YoutrackTokenOptions} from "youtrack-rest-client/d
 import {Credentials, CredentialStore} from "./credentialStore";
 import {configStore} from "./configStore";
 import {Youtrack} from "youtrack-rest-client";
+import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
 
 export type YoutrackConfigType = YoutrackLoginOptions | YoutrackTokenOptions | null;
 
@@ -34,10 +35,10 @@ export class YoutrackConfig {
         })
     }
 
-    public getYoutrackInstance(): Promise<Youtrack> {
+    public getYoutrackInstance(): Promise<YoutrackClient> {
         return this.get().then((config) => {
             if (config) {
-                return Promise.resolve(new Youtrack(config));
+                return new Youtrack(config).login();
             }
             return Promise.reject();
         });

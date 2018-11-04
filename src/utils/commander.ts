@@ -1,6 +1,9 @@
 import {Command} from "commander";
 import * as program from "commander";
 import chalk from "chalk";
+import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
+import {CredentialStore} from "./credentialStore";
+import {YoutrackConfig} from "./youtrackConfig";
 
 export function startCommander(knownSubCommands: string[] = []): Command {
     if (!process.argv.slice(2).length) {
@@ -16,4 +19,12 @@ export function startCommander(knownSubCommands: string[] = []): Command {
     });
 
     return program.parse(process.argv);
+}
+
+export function actionWrapper(fn: (client: YoutrackClient) => any): Promise<any> {
+    return CredentialStore.ensureCredentialsPresent().then(() => {
+        return new YoutrackConfig().getYoutrackInstance().then(client => {
+            return fn(client);
+        });
+    });
 }

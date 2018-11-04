@@ -1,4 +1,4 @@
-import {table} from "table";
+import {table, getBorderCharacters} from "table";
 import chalk from "chalk";
 
 export class RawPrinter {
@@ -23,30 +23,23 @@ export class TablePrinter {
 
 
         const config = {
-            border: {
-                topBody: `─`,
-                topJoin: `┬`,
-                topLeft: `┌`,
-                topRight: `┐`,
-
-                bottomBody: `─`,
-                bottomJoin: `┴`,
-                bottomLeft: `└`,
-                bottomRight: `┘`,
-
-                bodyLeft: `│`,
-                bodyRight: `│`,
-                bodyJoin: `│`,
-
-                joinBody: `─`,
-                joinLeft: `├`,
-                joinRight: `┤`,
-                joinJoin: `┼`
-            },
+            border: getBorderCharacters(`norc`),
             columns: {
                 ...columnConfig
             }
         };
         console.log(table(rows, config));
+    }
+}
+
+export function printObject(object: any, options: any) {
+    if (options.raw) {
+        RawPrinter.print(object);
+    } else {
+        const attributes = options.attributes;
+        if (!Array.isArray(object)) {
+            object = [object];
+        }
+        TablePrinter.print(object, attributes, options['columnConfig'] || {});
     }
 }

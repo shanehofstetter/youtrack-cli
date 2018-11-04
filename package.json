@@ -6,7 +6,8 @@
   "types": "dist/youtrack.d.ts",
   "bin": {
     "youtrack": "bin/youtrack.js",
-    "youtrack-project": "bin/youtrack-project.js"
+    "youtrack-project": "bin/youtrack-project.js",
+    "youtrack-user": "bin/youtrack-user.js"
   },
   "scripts": {
     "build": "tsc",

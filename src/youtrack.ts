@@ -5,10 +5,25 @@ import {PackageInformation} from "./utils/packageInformation";
 
 program.version(PackageInformation.get().version);
 
-program
-    .command('project')
-    .description('manage projects')
-    .alias('p');
+const subCommands = [
+    {
+        command: 'project',
+        description: 'manage projects',
+        alias: 'p'
+    },
+    {
+        command: 'user',
+        description: 'manage users',
+        alias: 'u'
+    }
+];
+
+subCommands.forEach((command) => {
+    program
+        .command(command.command)
+        .description(command.description)
+        .alias(command.alias);
+});
 
 program
     .command('setup')
@@ -17,4 +32,4 @@ program
         new SetupCommand().execute();
     });
 
-startCommander(['project', 'p']);
+startCommander([].concat.apply([], subCommands.map((c) => [c.command, c.alias])));
