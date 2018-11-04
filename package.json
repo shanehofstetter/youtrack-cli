@@ -9,7 +9,8 @@
     "youtrack-project": "bin/youtrack-project.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "watch 'npm run build' src"
   },
   "keywords": [
     "youtrack",
@@ -23,14 +24,27 @@
   "author": "Shane Hofstetter",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.4.1",
     "commander": "^2.19.0",
+    "configstore": "^4.0.0",
+    "inquirer": "^6.2.0",
+    "keytar": "^4.3.0",
+    "table": "^5.1.0",
+    "valid-url": "^1.0.9",
     "youtrack-rest-client": "^0.2.1"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
+    "@types/configstore": "^2.1.1",
+    "@types/inquirer": "0.0.43",
+    "@types/keytar": "^4.0.1",
     "@types/node": "^10.12.2",
+    "@types/request-promise": "^4.1.42",
+    "@types/table": "^4.0.5",
     "ts-node": "^7.0.1",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "watch": "^1.0.2"
   },
   "files": [
     "dist",
