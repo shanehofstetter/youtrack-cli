@@ -7,7 +7,7 @@ program.version(PackageInformation.get().version);
 
 program
     .command('project')
-    .description('project command description')
+    .description('manage projects')
     .alias('p');
 
 program
