@@ -5,12 +5,9 @@ import {CredentialStore} from "../utils/credentialStore";
 import {PackageInformation} from "../utils/packageInformation";
 import {YoutrackConfig} from "../utils/youtrackConfig";
 import {Youtrack} from "youtrack-rest-client";
+import {YoutrackCliCommand} from "./commands";
 
 const validUrl = require('valid-url');
-
-export interface YoutrackCliCommand {
-    execute(...args: any[]): any;
-}
 
 export class SetupCommand implements YoutrackCliCommand {
 
