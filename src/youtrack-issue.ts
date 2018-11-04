@@ -48,6 +48,7 @@ function formatIssueFields(fields: Field[]) {
     });
 }
 
+// TODO: add 'max' option (default = none)
 program
     .command('find')
     .alias('f')
