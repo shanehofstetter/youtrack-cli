@@ -15,6 +15,11 @@ const subCommands = [
         command: 'user',
         description: 'manage users',
         alias: 'u'
+    },
+    {
+        command: 'issue',
+        description: 'manage issues',
+        alias: 'i'
     }
 ];
 

@@ -8,7 +8,7 @@ export class RawPrinter {
 }
 
 export class TablePrinter {
-    public static print(objects: any[], attributes: string[], columnConfig: {} = {}) {
+    public static print(objects: any[], attributes: string[], columnConfig: {} = {}, columnDefault: {} = {}) {
         const rows = objects.map(obj => {
             return attributes.map(attr => {
                 const value = obj[attr];
@@ -26,7 +26,8 @@ export class TablePrinter {
             border: getBorderCharacters(`norc`),
             columns: {
                 ...columnConfig
-            }
+            },
+            columnDefault
         };
         console.log(table(rows, config));
     }
@@ -40,6 +41,14 @@ export function printObject(object: any, options: any) {
         if (!Array.isArray(object)) {
             object = [object];
         }
-        TablePrinter.print(object, attributes, options['columnConfig'] || {});
+        TablePrinter.print(object, attributes, options['columnConfig'] || {}, options['columnDefault'] || {});
     }
+}
+
+export function toDateString(timestamp: string | number): string {
+    if (typeof timestamp !== 'number') {
+        timestamp = parseInt(timestamp);
+    }
+    const created = new Date(timestamp);
+    return `${created.toLocaleDateString()} ${created.toLocaleTimeString()}`;
 }
