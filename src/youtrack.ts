@@ -25,8 +25,7 @@ const subCommands = [
 
 subCommands.forEach((command) => {
     program
-        .command(command.command)
-        .description(command.description)
+        .command(command.command, command.description)
         .alias(command.alias);
 });
 
