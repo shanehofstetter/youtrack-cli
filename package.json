@@ -14,6 +14,14 @@
     "build": "tsc",
     "dev": "watch 'npm run build' src"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shanehofstetter/youtrack-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shanehofstetter/youtrack-cli/issues"
+  },
+  "homepage": "https://github.com/shanehofstetter/youtrack-cli#readme",
   "keywords": [
     "youtrack",
     "cli",
