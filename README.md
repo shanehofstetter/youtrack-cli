@@ -13,11 +13,11 @@ yarn add youtrack-cli
 
 ## Usage
 
-After you installed the package globally, the command `youtrack` will be available.
+After you've installed the package globally, youtrack-cli will be available as `youtrack` in your command line.
 
 ### Getting started
 
-To setup the cli (set the URL, provide your credentials) run:
+To setup the cli (set the URL, provide your credentials), run:
 ```bash
 $ youtrack setup
 ```
@@ -65,16 +65,8 @@ Example:
 $ youtrack project ls
 ```
 
-```
-┌─────────────────┬────────────────┐
-│ shortName       │ name           │
-├─────────────────┼────────────────┤
-│ MP              │ myotherproject │
-├─────────────────┼────────────────┤
-│ T1              │ test 1         │
-└─────────────────┴────────────────┘
+![image](https://user-images.githubusercontent.com/13404717/48026722-28e7af00-e147-11e8-8716-e63e9be1d0f8.png)
 
-```
 
 #### Users
 
@@ -89,3 +81,33 @@ info|i [options]        show info about current user
 show [options] <login>  show info about user
 ```
 
+
+#### Issues
+
+```
+$ youtrack issue <subcommand> <options>
+```
+
+Available subcommands:
+
+```
+find|f [options]            search issues with a query (starts prompt)
+show|s [options] <issueId>  show issue info
+```
+
+##### find
+
+```
+Options:
+  -r, --raw             print raw json
+  -m, --max <max>       limit number of issues shown
+  -f, --fields <field>  which fields to display
+```
+
+Example:  
+
+```bash
+$ youtrack issue f
+```
+
+![image](https://user-images.githubusercontent.com/13404717/48027143-3e110d80-e148-11e8-8df3-f65bddacf861.png)
