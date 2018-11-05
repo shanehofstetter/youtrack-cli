@@ -45,10 +45,13 @@ export function printObject(object: any, options: any) {
     }
 }
 
-export function toDateString(timestamp: string | number): string {
+export function toDateString(timestamp: string | number, showTime: boolean = true): string {
     if (typeof timestamp !== 'number') {
         timestamp = parseInt(timestamp);
     }
     const created = new Date(timestamp);
-    return `${created.toLocaleDateString()} ${created.toLocaleTimeString()}`;
+    if (showTime) {
+        return `${created.toLocaleDateString()} ${created.toLocaleTimeString()}`;
+    }
+    return created.toLocaleDateString();
 }

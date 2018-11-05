@@ -6,8 +6,9 @@ import {CredentialStore} from "./credentialStore";
 import {YoutrackConfig} from "./youtrackConfig";
 
 export function startCommander(knownSubCommands: string[] = []): Command {
+
     if (!process.argv.slice(2).length) {
-        program.outputHelp((txt) => chalk.yellow(txt));
+        program.help((txt) => chalk.yellow(txt));
     }
 
     program.on('command:*', () => {

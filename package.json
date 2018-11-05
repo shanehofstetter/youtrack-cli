@@ -8,7 +8,8 @@
     "youtrack": "bin/youtrack.js",
     "youtrack-project": "bin/youtrack-project.js",
     "youtrack-user": "bin/youtrack-user.js",
-    "youtrack-issue": "bin/youtrack-issue.js"
+    "youtrack-issue": "bin/youtrack-issue.js",
+    "youtrack-workitem": "bin/youtrack-workitem.js"
   },
   "scripts": {
     "build": "tsc",
@@ -41,7 +42,7 @@
     "keytar": "^4.3.0",
     "table": "^5.1.0",
     "valid-url": "^1.0.9",
-    "youtrack-rest-client": "^0.2.2"
+    "youtrack-rest-client": "^0.2.3"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",

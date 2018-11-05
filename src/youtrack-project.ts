@@ -2,6 +2,7 @@ import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
 import {printObject} from "./utils/printer";
 import {Project} from "youtrack-rest-client/dist/entities/project";
+import {handleError} from "./utils/errorHandler";
 
 program
     .command('list')
@@ -24,7 +25,7 @@ program
                     raw: args.raw,
                     attributes: ['shortName', 'name', 'description'].filter(a => args.desc || a !== 'description')
                 });
-            })
+            }).catch(handleError);
         });
     });
 

@@ -2,6 +2,7 @@ import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
 import {User} from "youtrack-rest-client/dist/entities/user";
 import {printObject} from "./utils/printer";
+import {handleError} from "./utils/errorHandler";
 
 const columnConfig = {
     0: {
@@ -25,7 +26,7 @@ program
                 printObject(user, {
                     raw: args.raw, columnConfig, attributes
                 });
-            });
+            }).catch(handleError);;
         });
     });
 
@@ -39,7 +40,7 @@ program
                 printObject(user, {
                     raw: args.raw, columnConfig, attributes
                 });
-            })
+            }).catch(handleError);
         });
     });
 

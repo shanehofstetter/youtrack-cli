@@ -2,6 +2,7 @@ import * as program from 'commander';
 import {startCommander} from "./utils/commander";
 import {SetupCommand} from "./commands/setupCommand";
 import {PackageInformation} from "./utils/packageInformation";
+import {Command} from "commander";
 
 program.version(PackageInformation.get().version);
 
@@ -20,13 +21,20 @@ const subCommands = [
         command: 'issue',
         description: 'manage issues',
         alias: 'i'
+    },
+    {
+        command: 'workitem',
+        description: 'manage workitems',
+        alias: 'w'
     }
 ];
 
+const commands: Command[] = [];
+
 subCommands.forEach((command) => {
-    program
+    commands.push(program
         .command(command.command, command.description)
-        .alias(command.alias);
+        .alias(command.alias));
 });
 
 program

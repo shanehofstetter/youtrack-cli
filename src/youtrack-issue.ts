@@ -5,6 +5,7 @@ import {Issue} from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
 import {formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/searchIssuesCommand";
+import {handleError} from "./utils/errorHandler";
 
 const columnConfig = {
     0: {
@@ -67,7 +68,7 @@ program
                         TablePrinter.print(comments, ['author', 'text', 'created', 'deleted'], {1: {width: 40}});
                     }
                 }
-            });
+            }).catch(handleError);;
         });
     });
 
