@@ -4,6 +4,7 @@ import chalk from "chalk";
 import * as inquirer from "inquirer";
 import {printObject} from "../utils/printer";
 import {formatIssueFields} from "../utils/formatters/issueFormatter";
+import {handleError} from "../utils/errorHandler";
 
 export class SearchIssuesCommand implements YoutrackCliCommand {
 
@@ -43,7 +44,7 @@ export class SearchIssuesCommand implements YoutrackCliCommand {
                         attributes: ['id', ...Array.from(fieldNames)],
                         columnOptions: {}
                     });
-                });
+                }).catch(handleError);
             });
         });
     }
