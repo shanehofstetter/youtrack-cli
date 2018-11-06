@@ -19,7 +19,7 @@ program
                     return RawPrinter.print(workItems);
                 }
 
-                const formattedWorkItems = workItems.map(workItem => {
+                const formattedWorkItems = workItems.sort((a, b) => a.date - b.date).map(workItem => {
                     const formattedWorkItem: any = {...workItem, date: toDateString(workItem.date, false)};
                     if (workItem.author) {
                         formattedWorkItem.author = workItem.author.login;
@@ -29,7 +29,6 @@ program
                     return formattedWorkItem;
                 });
 
-                // TODO: sort work-items by date
                 printObject(formattedWorkItems, {
                     columnConfig: {
                         0: {
