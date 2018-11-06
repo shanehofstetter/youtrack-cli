@@ -58,7 +58,7 @@ export class SetupCommand implements YoutrackCliCommand {
             }
         },
         {
-            type: 'input',
+            type: 'password',
             name: 'token',
             message: 'Permanent Token:',
             when: (answers: any) => {
