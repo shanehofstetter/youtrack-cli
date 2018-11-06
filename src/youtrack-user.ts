@@ -26,7 +26,7 @@ program
                 printObject(user, {
                     raw: args.raw, columnConfig, attributes
                 });
-            }).catch(handleError);;
+            }).catch(handleError);
         });
     });
 

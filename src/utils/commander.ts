@@ -4,6 +4,7 @@ import chalk from "chalk";
 import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
 import {CredentialStore} from "./credentialStore";
 import {YoutrackConfig} from "./youtrackConfig";
+import {handleError} from "./errorHandler";
 
 export function startCommander(knownSubCommands: string[] = []): Command {
 
@@ -26,6 +27,6 @@ export function actionWrapper(fn: (client: YoutrackClient) => any): Promise<any>
     return CredentialStore.ensureCredentialsPresent().then(() => {
         return new YoutrackConfig().getYoutrackInstance().then(client => {
             return fn(client);
-        });
+        }).catch(handleError);
     });
 }

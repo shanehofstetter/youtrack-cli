@@ -68,7 +68,7 @@ program
                         TablePrinter.print(comments, ['author', 'text', 'created', 'deleted'], {1: {width: 40}});
                     }
                 }
-            }).catch(handleError);;
+            }).catch(handleError);
         });
     });
 
