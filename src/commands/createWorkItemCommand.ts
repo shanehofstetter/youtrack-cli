@@ -7,6 +7,8 @@ import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
 import {RawPrinter, TablePrinter} from "../utils/printer";
 import {handleError} from "../utils/errorHandler";
 import {getLocaleDateFormat, parseDateWithLocale} from "../utils/locale";
+import {DurationParser} from "../utils/parsers/duration";
+import {TimeTrackingConfig} from "../types/timeTrackingConfig";
 
 const moment = require('moment');
 const osLocale = require('os-locale');
@@ -14,10 +16,13 @@ const osLocale = require('os-locale');
 export class CreateWorkItemCommand implements YoutrackCliCommand {
 
     private workTypeNames: string[] = [];
+    private timeTrackingConfig: TimeTrackingConfig = {hoursADay: 8, daysAWeek: 5};
     private locale: string = "en-US";
     private youtrackClient: YoutrackClient | null = null;
 
     private fetchWorkItemNamesForIssue(issueId: string): Promise<any> {
+        // TODO: implement endpoints and/or methods in youtrack-rest-client
+
         if (this.youtrackClient !== null) {
             return this.youtrackClient.issues.byId(issueId).then(issue => {
                 let projectShortName: any = issue.field.find(f => f.name === 'projectShortName');
@@ -26,13 +31,19 @@ export class CreateWorkItemCommand implements YoutrackCliCommand {
                 }
                 if (this.youtrackClient) {
                     const workTypesUrl: string = '/admin/project/' + projectShortName + '/timetracking/worktype';
-                    return this.youtrackClient
+                    this.youtrackClient
                         .get(workTypesUrl).then((response) => {
-                            if (response.length > 0) {
-                                this.workTypeNames = response.map((wt: any) => wt.name);
-                            }
-                            return Promise.resolve();
-                        });
+                        if (response.length > 0) {
+                            this.workTypeNames = response.map((wt: any) => wt.name);
+                        }
+                    });
+                    this.youtrackClient
+                        .get('/admin/timetracking').then((response) => {
+                        this.timeTrackingConfig = response;
+                    }).catch(error => {
+                        // most probably permission error
+                        // ... falling back to defaults
+                    });
                 }
             });
         }
@@ -46,7 +57,7 @@ export class CreateWorkItemCommand implements YoutrackCliCommand {
                 name: 'issueId',
                 message: 'Issue ID:',
                 validate: (issueId: any) => {
-                    if (issueId.length >= 1) {
+                    if (issueId.length > 1) {
                         return this.fetchWorkItemNamesForIssue(issueId).then(() => {
                             return Promise.resolve(true);
                         }).catch(() => {
@@ -62,10 +73,10 @@ export class CreateWorkItemCommand implements YoutrackCliCommand {
             {
                 type: 'input',
                 name: 'duration',
-                message: 'Duration (minutes):',
-                default: 60,
-                validate: (duration: any) => {
-                    if (duration > 0) {
+                message: 'Duration:',
+                default: '1h',
+                validate: (duration: string) => {
+                    if (new DurationParser(this.timeTrackingConfig).parseDuration(duration) > 0) {
                         return true;
                     }
                     return chalk.red('please provide a duration greater than 0 minutes');
@@ -119,7 +130,7 @@ export class CreateWorkItemCommand implements YoutrackCliCommand {
             this.youtrackClient = client;
             return inquirer.prompt(this.getQueryPrompt()).then((answers: any) => {
                 const workItem: WorkItem = {
-                    duration: answers.duration,
+                    duration: new DurationParser(this.timeTrackingConfig).parseDuration(answers.duration),
                     description: answers.description,
                     date: parseDateWithLocale(answers.date, this.locale).toDate().getTime(),
                     worktype: {
