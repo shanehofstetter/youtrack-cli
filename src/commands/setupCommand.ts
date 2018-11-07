@@ -21,7 +21,7 @@ export class SetupCommand implements YoutrackCliCommand {
         {
             type: 'input',
             name: 'base_url',
-            message: 'Youtrack Url (e.g. "https://org.myjetbrains.com"',
+            message: 'Youtrack Url (e.g. "https://your-organisation.myjetbrains.com"',
             validate: (url: string) => {
                 if (validUrl.isUri(url)) {
                     return true;
