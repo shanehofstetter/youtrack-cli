@@ -112,7 +112,7 @@ Example:
 $ youtrack issue f
 ```
 
-![image](https://user-images.githubusercontent.com/13404717/48027143-3e110d80-e148-11e8-8df3-f65bddacf861.png)
+![image](https://user-images.githubusercontent.com/13404717/48168483-ac440480-e2ef-11e8-9de5-6484deb0bad4.png)
 
 #### Work-Items (Timetracking)
 
