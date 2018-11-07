@@ -1,6 +1,7 @@
 import {Field} from "youtrack-rest-client/dist/entities/issue";
 import {toDateString} from "../printer";
 import chalk from "chalk";
+chalk.level = 1;
 
 export function formatIssueFields(fields: Field[]) {
     return fields.map(f => {
@@ -20,17 +21,12 @@ export function formatIssueFields(fields: Field[]) {
         }
 
         if ("color" in field && !!field.color) {
-            const prevLevel = chalk.level;
-            chalk.level = 1;
-
             if (field.color.bg) {
-                field.value = chalk.hex(field.color.bg)(field.value);
+                field.value = chalk.bgHex(field.color.bg)(field.value);
             }
             if (field.color.fg) {
                 field.value = chalk.hex(field.color.fg)(field.value);
             }
-
-            chalk.level = prevLevel;
         }
 
         field.name = chalk.bold(f.name);
