@@ -13,7 +13,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "watch 'npm run build' src"
+    "dev": "watch 'npm run build' src",
+    "prepare": "npm run build",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
