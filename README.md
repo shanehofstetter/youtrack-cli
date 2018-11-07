@@ -113,3 +113,31 @@ $ youtrack issue f
 ```
 
 ![image](https://user-images.githubusercontent.com/13404717/48027143-3e110d80-e148-11e8-8df3-f65bddacf861.png)
+
+#### Work-Items (Timetracking)
+
+```
+$ youtrack workitem <subcommand> <options>
+```
+
+Available subcommands:
+```
+list|ls [options] <issueId>  list all workitems for issue
+create|c [options]           create new work item for an issue (opens prompt)
+```
+
+##### list
+
+```
+Options:
+  -r, --raw             print raw json
+```
+
+Example:  
+
+```bash
+$ youtrack workitem ls T1-2
+```
+
+![image](https://user-images.githubusercontent.com/13404717/48168349-232ccd80-e2ef-11e8-9cb7-dbe8222e0203.png)
+
