@@ -6,11 +6,17 @@ export function formatIssueFields(fields: Field[]) {
     return fields.map(f => {
         const {...field}: any = f;
 
-        if (['created', 'updated'].indexOf(field.name) >= 0 && typeof field.value === 'string') {
+        if (['created', 'updated', 'resolved'].indexOf(field.name) >= 0 && typeof field.value === 'string') {
             field.value = toDateString(field.value);
         }
-        if (Array.isArray(field.value) && field.value.length == 1 && typeof field.value[0] === 'object') {
-            field.value = field.value[0].value;
+        if (Array.isArray(field.value) && field.value.length > 0 && typeof field.value[0] === 'object') {
+            formatArrayOfObjects(field);
+        }
+        if ('valueId' in field) {
+            field.value = field.valueId;
+        }
+        if (typeof field.value === 'string' && ['true', 'false'].indexOf(field.value) >= 0) {
+            field.value = field.value === 'true' ? 'Yes' : 'No';
         }
 
         if ("color" in field && !!field.color) {
@@ -31,4 +37,25 @@ export function formatIssueFields(fields: Field[]) {
 
         return field;
     });
+}
+
+function formatArrayOfObjects(field: Field): Field {
+    if (!Array.isArray(field.value)) {
+        return field;
+    }
+    if ('role' in field.value[0] && typeof field.value[0].role === 'string') {
+        const roles: string[] = Array.from(new Set(field.value.map((v: any) => v.role).filter((v: any) => !!v)));
+        let value = '';
+        for (let i = 0; i < roles.length; i++) {
+            const role: string = roles[i];
+            value += role + ": " + field.value.filter((v: any) => v.role === role).map((v: any) => v.value).join(', ');
+            if (i > 0) {
+                value += ", ";
+            }
+        }
+        field.value = value;
+    } else {
+        field.value = field.value.map((v: any) => v.value).join(', ');
+    }
+    return field;
 }

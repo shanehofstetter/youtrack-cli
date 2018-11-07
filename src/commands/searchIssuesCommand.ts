@@ -42,7 +42,11 @@ export class SearchIssuesCommand implements YoutrackCliCommand {
                     printObject(formattedIssues, {
                         raw,
                         attributes: ['id', ...Array.from(fieldNames)],
-                        columnOptions: {}
+                        columnConfig: {
+                            1: {
+                                width: 50
+                            }
+                        }
                     });
                 }).catch(handleError);
             });
