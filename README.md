@@ -36,6 +36,8 @@ Available commands are:
 ```
 project|p      manage projects
 user|u         manage users
+issue|i        manage issues
+workitem|w     manage workitems
 setup          setup youtrack cli
 ```
 
