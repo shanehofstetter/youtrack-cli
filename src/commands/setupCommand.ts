@@ -83,15 +83,21 @@ export class SetupCommand implements YoutrackCliCommand {
                     process.exit(0);
                 }
             }).then(() => {
-                inquirer.prompt(this.setupQuestions).then(answers => {
-                    this.storeConfig(answers).then(() => {
-                        this.checkAccess().then(() => {
-                            this.complete();
-                        }).catch(() => this.fail());
-                    });
-                });
+                this.runSetup();
             });
+        } else {
+            this.runSetup();
         }
+    }
+
+    private runSetup(): void {
+        inquirer.prompt(this.setupQuestions).then(answers => {
+            this.storeConfig(answers).then(() => {
+                this.checkAccess().then(() => {
+                    this.complete();
+                }).catch(() => this.fail());
+            });
+        });
     }
 
     private storeConfig(answers: { [key: string]: any }): Promise<any> {
