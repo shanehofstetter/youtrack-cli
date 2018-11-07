@@ -51,14 +51,12 @@ program
                 if (args.raw) {
                     RawPrinter.print(issue);
                 } else {
-                    TablePrinter.print([issue], ['id'], columnConfig);
                     if (issue.field) {
-                        console.log(chalk.gray('fields:'));
                         const fields = formatIssueFields(issue.field);
 
                         TablePrinter.print(fields, ['name', 'value'], {1: {width: 80}});
                     }
-                    if (issue.comment) {
+                    if (issue.comment && issue.comment.length > 0) {
                         console.log(chalk.gray('comments:'));
 
                         const comments = issue.comment.map(c => {
