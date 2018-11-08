@@ -4,7 +4,7 @@ import {User} from "youtrack-rest-client/dist/entities/user";
 import {printObject} from "./utils/printer";
 import {handleError} from "./utils/errorHandler";
 
-const columnConfig = {
+const userColumnConfig = {
     0: {
         width: 30
     },
@@ -13,7 +13,7 @@ const columnConfig = {
     }
 };
 
-const attributes = ['login', 'email', 'fullName'];
+const visibleUserAttributes = ['login', 'email', 'fullName'];
 
 program
     .command('info')
@@ -24,7 +24,7 @@ program
         return actionWrapper((client) => {
             return client.users.current().then((user: User) => {
                 printObject(user, {
-                    raw: args.raw, columnConfig, attributes
+                    raw: args.raw, columnConfig: userColumnConfig, attributes: visibleUserAttributes
                 });
             }).catch(handleError);
         });
@@ -38,7 +38,7 @@ program
         return actionWrapper((client) => {
             return client.users.byName(login).then((user: User) => {
                 printObject(user, {
-                    raw: args.raw, columnConfig, attributes
+                    raw: args.raw, columnConfig: userColumnConfig, attributes: visibleUserAttributes
                 });
             }).catch(handleError);
         });

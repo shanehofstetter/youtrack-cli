@@ -7,15 +7,6 @@ import {formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/searchIssuesCommand";
 import {handleError} from "./utils/errorHandler";
 
-const columnConfig = {
-    0: {
-        width: 30
-    },
-    2: {
-        width: 30
-    }
-};
-
 program
     .command('find')
     .alias('f')
