@@ -126,6 +126,8 @@ Available subcommands:
 ```
 list|ls [options] <issueId>  list all workitems for issue
 create|c [options]           create new work item for an issue (opens prompt)
+delete|d                     delete work item of an issue (opens prompt)
+edit|e                       edit work item of an issue (opens prompt)
 ```
 
 ##### list
