@@ -54,7 +54,7 @@ program
                             return {...c, created: toDateString(c.created)};
                         });
 
-                        TablePrinter.print(comments, ['author', 'text', 'created', 'deleted'], {1: {width: 40}});
+                        TablePrinter.print(comments, ['id', 'author', 'text', 'created', 'deleted'], {2: {width: 40}});
                     }
                 }
             }).catch(handleError);
