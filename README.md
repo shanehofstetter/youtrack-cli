@@ -2,7 +2,8 @@
 Command Line Tool for interacting with youtrack
 
 [![Build Status](https://travis-ci.com/shanehofstetter/youtrack-cli.svg?branch=master)](https://travis-ci.com/shanehofstetter/youtrack-cli)
-
+![npm](https://img.shields.io/npm/v/youtrack-cli.svg)
+![NpmLicense](https://img.shields.io/npm/l/youtrack-cli.svg)
 
 ## Install
 ```
