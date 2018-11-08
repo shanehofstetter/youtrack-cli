@@ -93,8 +93,7 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                                 id: this.workItemId,
                                 duration: new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(answers.duration),
                                 description: answers.description,
-                                date: parseDateWithLocale(answers.date, this.locale).toDate().getTime(),
-                                worktype: {name: ''}
+                                date: parseDateWithLocale(answers.date, this.locale).toDate().getTime()
                             };
                             return client.workItems.edit(this.issueId, workItem).then(() => {
                                 console.log(chalk.green(`Work Item ${this.workItemId} updated.`))
