@@ -26,7 +26,7 @@ program
                     if (workItem.author) {
                         formattedWorkItem.author = workItem.author.login;
                     }
-                    formattedWorkItem.worktype = workItem.worktype.name;
+                    formattedWorkItem.worktype = workItem.worktype ? workItem.worktype.name : '';
                     formattedWorkItem.duration = formatDuration(workItem.duration);
                     return formattedWorkItem;
                 });
