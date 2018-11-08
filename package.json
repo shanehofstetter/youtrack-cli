@@ -46,7 +46,7 @@
     "os-locale": "^3.0.1",
     "table": "^5.1.0",
     "valid-url": "^1.0.9",
-    "youtrack-rest-client": "^0.2.4"
+    "youtrack-rest-client": "^0.3.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
