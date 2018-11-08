@@ -19,7 +19,7 @@ const columnConfig = {
 program
     .command('find')
     .alias('f')
-    .description('search issues with a query (starts prompt)')
+    .description('search issues by query (starts prompt)')
     .option('-r, --raw', 'print raw json')
     .option('-m, --max <max>', 'limit number of issues shown')
     .option('-f, --fields <field>', 'which fields to display', function (field, fields = []) {

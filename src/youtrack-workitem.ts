@@ -5,10 +5,11 @@ import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
 import {handleError} from "./utils/errorHandler";
 import {formatDuration} from "./utils/formatters/durationFormatter";
 import {CreateWorkItemCommand} from "./commands/createWorkItemCommand";
+import {DeleteWorkItemCommand} from "./commands/deleteWorkItemCommand";
 
 program
     .command('list <issueId>')
-    .description('list all workitems for issue')
+    .description('list all work items of an issue')
     .alias('ls')
     .option('-r, --raw', 'print raw json')
     .action((issueId, args) => {
@@ -54,6 +55,16 @@ program
     .option('-r, --raw', 'print raw json')
     .action((args) => {
         return new CreateWorkItemCommand().execute(args.raw);
+    });
+
+
+program
+    .command('delete')
+    .description('delete work item of an issue (opens prompt)')
+    .alias('d')
+    .option('-r, --raw', 'print raw json')
+    .action((args) => {
+        return new DeleteWorkItemCommand().execute(args.raw);
     });
 
 startCommander();
