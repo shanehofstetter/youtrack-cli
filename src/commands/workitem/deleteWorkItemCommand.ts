@@ -1,8 +1,8 @@
-import {YoutrackCliCommand} from "./commands";
+import {YoutrackCliCommand} from "../commands";
 import chalk from "chalk";
-import {actionWrapper} from "../utils/commander";
+import {actionWrapper} from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {handleError} from "../utils/errorHandler";
+import {handleError} from "../../utils/errorHandler";
 
 export class DeleteWorkItemCommand implements YoutrackCliCommand {
 
@@ -31,7 +31,7 @@ export class DeleteWorkItemCommand implements YoutrackCliCommand {
         }
     ];
 
-    public execute(raw: boolean): Promise<any> {
+    public execute(): Promise<any> {
         return actionWrapper((client) => {
             return inquirer.prompt(this.questions).then((answers: any) => {
                 return client.workItems.delete(answers.issueId, answers.workItemId).then(issues => {

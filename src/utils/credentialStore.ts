@@ -26,6 +26,8 @@ export class CredentialStore {
             })).then(() => {
                 return keytar.setPassword(SERVICE_NAME, username, password);
             });
+        }).catch(() => {
+            return keytar.setPassword(SERVICE_NAME, username, password);
         });
     }
 

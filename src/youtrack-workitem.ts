@@ -4,8 +4,9 @@ import {printObject, RawPrinter, toDateString} from "./utils/printer";
 import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
 import {handleError} from "./utils/errorHandler";
 import {formatDuration} from "./utils/formatters/durationFormatter";
-import {CreateWorkItemCommand} from "./commands/createWorkItemCommand";
-import {DeleteWorkItemCommand} from "./commands/deleteWorkItemCommand";
+import {CreateWorkItemCommand} from "./commands/workitem/createWorkItemCommand";
+import {DeleteWorkItemCommand} from "./commands/workitem/deleteWorkItemCommand";
+import {EditWorkItemCommand} from "./commands/workitem/editWorkItemCommand";
 
 program
     .command('list <issueId>')
@@ -33,16 +34,19 @@ program
                 printObject(formattedWorkItems, {
                     columnConfig: {
                         0: {
-                            width: 15
+                            width: 10
                         },
                         1: {
                             width: 15
                         },
                         2: {
+                            width: 15
+                        },
+                        3: {
                             width: 50
                         }
                     },
-                    attributes: ['date', 'duration', 'description', 'worktype', 'author']
+                    attributes: ['id', 'date', 'duration', 'description', 'worktype', 'author']
                 });
             }).catch(handleError);
         });
@@ -62,9 +66,16 @@ program
     .command('delete')
     .description('delete work item of an issue (opens prompt)')
     .alias('d')
-    .option('-r, --raw', 'print raw json')
-    .action((args) => {
-        return new DeleteWorkItemCommand().execute(args.raw);
+    .action(() => {
+        return new DeleteWorkItemCommand().execute();
+    });
+
+program
+    .command('edit')
+    .description('edit work item of an issue (opens prompt)')
+    .alias('e')
+    .action(() => {
+        return new EditWorkItemCommand().execute();
     });
 
 startCommander();

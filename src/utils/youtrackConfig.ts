@@ -3,14 +3,16 @@ import {Credentials, CredentialStore} from "./credentialStore";
 import {configStore} from "./configStore";
 import {Youtrack} from "youtrack-rest-client";
 import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
+import {TimeTrackingConfig} from "../types/timeTrackingConfig";
 
-export type YoutrackConfigType = YoutrackLoginOptions | YoutrackTokenOptions | null;
+export type YoutrackBaseConfigType = YoutrackLoginOptions | YoutrackTokenOptions | null;
 
 export class YoutrackConfig {
 
-    private config: YoutrackConfigType = null;
+    private config: YoutrackBaseConfigType = null;
+    private timeTrackingConfig: TimeTrackingConfig | null = null;
 
-    public get(): Promise<YoutrackConfigType> {
+    public get(): Promise<YoutrackBaseConfigType> {
         if (this.config) {
             return Promise.resolve(this.config);
         }
@@ -43,4 +45,30 @@ export class YoutrackConfig {
             return Promise.reject();
         });
     }
+
+    public getTimeTrackingConfig(): TimeTrackingConfig {
+        if (this.timeTrackingConfig) {
+            return this.timeTrackingConfig;
+        }
+        let timetrackingConfig: any = configStore.get('timetracking');
+        if (timetrackingConfig) {
+            this.timeTrackingConfig = timetrackingConfig;
+            return timetrackingConfig;
+        } else {
+            timetrackingConfig = {hoursADay: 8, daysAWeek: 5};
+            configStore.set('timetracking', timetrackingConfig);
+        }
+        return timetrackingConfig;
+    }
+
+    public setTimeTrackingConfig(timeTrackingConfig: TimeTrackingConfig): void {
+        if (timeTrackingConfig.hoursADay > 24) {
+            timeTrackingConfig.hoursADay = timeTrackingConfig.hoursADay / 60;
+        }
+        this.timeTrackingConfig = timeTrackingConfig;
+        configStore.set('timetracking', timeTrackingConfig);
+    }
+
 }
+
+export const youtrackConfig = new YoutrackConfig();

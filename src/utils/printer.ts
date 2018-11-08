@@ -45,13 +45,17 @@ export function printObject(object: any, options: any) {
     }
 }
 
-export function toDateString(timestamp: string | number, showTime: boolean = true): string {
+export function timestampToDate(timestamp: string | number): Date {
     if (typeof timestamp !== 'number') {
         timestamp = parseInt(timestamp);
     }
-    const created = new Date(timestamp);
+    return new Date(timestamp);
+}
+
+export function toDateString(timestamp: string | number, showTime: boolean = true): string {
+    const date = timestampToDate(timestamp);
     if (showTime) {
-        return `${created.toLocaleDateString()} ${created.toLocaleTimeString()}`;
+        return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     }
-    return created.toLocaleDateString();
+    return date.toLocaleDateString();
 }

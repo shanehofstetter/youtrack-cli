@@ -224,3 +224,10 @@ export function getLocaleDateFormat(locale: string): string {
 export function parseDateWithLocale(date: string, locale: string): Moment {
     return moment(date, getLocaleDateFormat(locale));
 }
+
+export function toLocalizedDateString(date: Moment | Date, locale: string): string {
+    if ("format" in date){
+        return date.format(getLocaleDateFormat(locale));
+    }
+    return moment(date).format(getLocaleDateFormat(locale));
+}

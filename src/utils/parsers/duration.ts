@@ -11,21 +11,21 @@ export class DurationParser {
 
         let totalMinutes = 0;
 
-        const minutes = this.parseDurationWithRegex(duration, /([0-9\,\.]+)m/i);
+        const minutes = this.parseDurationWithRegex(duration, /([0-9\,\.]+)m(in)?/i);
         if (minutes) {
             totalMinutes += minutes;
         }
-        const hours = this.parseDurationWithRegex(duration, /([0-9\,\.]+)h/i);
+        const hours = this.parseDurationWithRegex(duration, /([0-9\,\.]+)h(ours)?/i);
         if (hours) {
             totalMinutes += hours * 60;
         }
 
-        const days = this.parseDurationWithRegex(duration, /([0-9\,\.]+)d/i);
+        const days = this.parseDurationWithRegex(duration, /([0-9\,\.]+)d(ays)?/i);
         if (days) {
             totalMinutes += days * this.configuration.hoursADay * 60;
         }
 
-        const weeks = this.parseDurationWithRegex(duration, /([0-9\,\.]+)w/i);
+        const weeks = this.parseDurationWithRegex(duration, /([0-9\,\.]+)w(eeks)?/i);
         if (weeks) {
             totalMinutes += weeks * this.configuration.daysAWeek * this.configuration.hoursADay * 60;
         }
