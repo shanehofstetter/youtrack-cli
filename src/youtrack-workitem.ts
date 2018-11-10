@@ -54,11 +54,24 @@ program
 
 program
     .command('create')
-    .description('create new work item for an issue (opens prompt)')
+    .description('create new work item for an issue (opens prompt). if all parameters are given via options, interactive mode is skipped.')
     .alias('c')
+    .option('-i, --issue <issue>', 'issue id')
+    .option('-d, --duration <duration>', 'duration (e.g. "1h 30m")')
+    .option('--date <date>', 'date')
+    .option('-w, --worktype <worktype>', 'work-type')
+    .option('--desc, --description <description>', 'description')
     .option('-r, --raw', 'print raw json')
     .action((args) => {
-        return new CreateWorkItemCommand().execute(args.raw);
+        const workItemParameters = {
+            issueId: args.issue,
+            duration: args.duration,
+            date: args.date,
+            worktype: args.worktype,
+            description: args.description,
+        };
+
+        return new CreateWorkItemCommand().execute(args.raw, workItemParameters);
     });
 
 
