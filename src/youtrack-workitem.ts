@@ -54,7 +54,7 @@ program
 
 program
     .command('create')
-    .description('create new work item for an issue (opens prompt). if all parameters are given via options, interactive mode is skipped.')
+    .description('create new work item for an issue in interactive mode. if all parameters are given via options, interactive mode is skipped.')
     .alias('c')
     .option('-i, --issue <issue>', 'issue id')
     .option('-d, --duration <duration>', 'duration (e.g. "1h 30m")')

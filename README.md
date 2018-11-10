@@ -148,6 +148,9 @@ $ youtrack workitem ls T1-2
 
 ##### create
 
+Create a new work item for an issue in interactive mode. 
+If all parameters are given via options, the interactive mode is skipped.
+
 ```
 -i, --issue <issue>                  issue id
 -d, --duration <duration>            duration (e.g. "1h 30m")
