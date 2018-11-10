@@ -146,3 +146,26 @@ $ youtrack workitem ls T1-2
 
 ![image](https://user-images.githubusercontent.com/13404717/48168349-232ccd80-e2ef-11e8-9cb7-dbe8222e0203.png)
 
+##### create
+
+```
+-i, --issue <issue>                  issue id
+-d, --duration <duration>            duration (e.g. "1h 30m")
+--date <date>                        date
+-w, --worktype <worktype>            work-type
+--desc, --description <description>  description
+-r, --raw                            print raw json
+-h, --help                           output usage information
+```
+
+Example:
+
+```bash
+$ youtrack w c --issue "T1-1" --duration "1h 30m" --date "6.11.2018" --worktype "testing" --description "tested it in IE"
+```
+
+You can also start the interactive mode by omitting all Options:
+
+```bash
+$ youtrack w c
+```
