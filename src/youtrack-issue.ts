@@ -1,17 +1,18 @@
 import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
-import {RawPrinter, TablePrinter, toDateString} from "./utils/printer";
+import {RawPrinter, TablePrinter} from "./utils/printer";
 import {Issue} from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
 import {formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
 import {handleError} from "./utils/errorHandler";
 import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
+import {CommentPrinter} from "./utils/printers/commentPrinter";
 
 program
     .command('find')
     .alias('f')
-    .description('search issues by query (starts prompt)')
+    .description('search issues by query (interactive)')
     .option('-r, --raw', 'print raw json')
     .option('-m, --max <max>', 'limit number of issues shown')
     .option('-f, --fields <field>', 'which fields to display', function (field, fields = []) {
@@ -51,11 +52,7 @@ program
                     if (issue.comment && issue.comment.length > 0) {
                         console.log(chalk.gray('comments:'));
 
-                        const comments = issue.comment.map(c => {
-                            return {...c, created: toDateString(c.created)};
-                        });
-
-                        TablePrinter.print(comments, ['id', 'author', 'text', 'created', 'deleted'], {2: {width: 40}});
+                        CommentPrinter.printComments(issue.comment, false);
                     }
                 }
             }).catch(handleError);

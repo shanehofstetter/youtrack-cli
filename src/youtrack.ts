@@ -26,6 +26,11 @@ const subCommands = [
         command: 'workitem',
         description: 'manage workitems',
         alias: 'w'
+    },
+    {
+        command: 'comment',
+        description: 'manage issue comment',
+        alias: 'c'
     }
 ];
 

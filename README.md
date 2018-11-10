@@ -96,7 +96,7 @@ $ youtrack issue <subcommand> <options>
 Available subcommands:
 
 ```
-find|f [options]            search issues with a query (starts prompt)
+find|f [options]            search issues with a query (interactive)
 show|s [options] <issueId>  show issue info
 delete|d [options] <issue>  delete an issue by its id
 ```
@@ -127,9 +127,9 @@ $ youtrack workitem <subcommand> <options>
 Available subcommands:
 ```
 list|ls [options] <issueId>  list all workitems for issue
-create|c [options]           create new work item for an issue (opens prompt)
-delete|d                     delete work item of an issue (opens prompt)
-edit|e                       edit work item of an issue (opens prompt)
+create|c [options]           create new work item for an issue (interactive)
+delete|d                     delete work item of an issue (interactive)
+edit|e                       edit work item of an issue (interactive)
 ```
 
 ##### list
@@ -173,3 +173,26 @@ You can also start the interactive mode by omitting all Options:
 ```bash
 $ youtrack w c
 ```
+
+#### Issue Comments
+
+```
+$ youtrack comment <subcommand> <options>
+```
+Available subcommands:
+
+```
+list|ls [options] <issueId>  list all comments of an issue
+create|c [options]           add comment to an issue. starts interactive mode if parameters are omitted.
+delete|d                     delete a comment (interactive
+edit|e                       update a comment (interactive
+```
+
+##### create
+
+Example:  
+
+```bash
+$ youtrack comment create -i T1-1 -c "my comment"
+```
+

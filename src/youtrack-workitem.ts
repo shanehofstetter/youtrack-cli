@@ -77,7 +77,7 @@ program
 
 program
     .command('delete')
-    .description('delete work item of an issue (opens prompt)')
+    .description('delete work item of an issue (interactive)')
     .alias('d')
     .action(() => {
         return new DeleteWorkItemCommand().execute();
@@ -85,7 +85,7 @@ program
 
 program
     .command('edit')
-    .description('edit work item of an issue (opens prompt)')
+    .description('edit work item of an issue (interactive)')
     .alias('e')
     .action(() => {
         return new EditWorkItemCommand().execute();
