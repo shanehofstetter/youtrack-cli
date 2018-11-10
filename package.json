@@ -1,6 +1,6 @@
 {
   "name": "youtrack-cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "cli for youtrack",
   "main": "dist/youtrack.js",
   "types": "dist/youtrack.d.ts",
