@@ -46,7 +46,7 @@
     "os-locale": "^3.0.1",
     "table": "^5.1.0",
     "valid-url": "^1.0.9",
-    "youtrack-rest-client": "^0.3.0"
+    "youtrack-rest-client": "^0.3.1"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
@@ -54,7 +54,7 @@
     "@types/configstore": "^2.1.1",
     "@types/inquirer": "0.0.43",
     "@types/keytar": "^4.0.1",
-    "@types/node": "^10.12.2",
+    "@types/node": "^10.12.5",
     "@types/request-promise": "^4.1.42",
     "@types/table": "^4.0.5",
     "ts-node": "^7.0.1",
