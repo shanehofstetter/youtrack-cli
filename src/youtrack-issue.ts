@@ -4,8 +4,9 @@ import {RawPrinter, TablePrinter, toDateString} from "./utils/printer";
 import {Issue} from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
 import {formatIssueFields} from "./utils/formatters/issueFormatter";
-import {SearchIssuesCommand} from "./commands/searchIssuesCommand";
+import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
 import {handleError} from "./utils/errorHandler";
+import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
 
 program
     .command('find')
@@ -59,6 +60,15 @@ program
                 }
             }).catch(handleError);
         });
+    });
+
+program
+    .command('delete <issue>')
+    .description('delete an issue by its id')
+    .option('-y, --skip-confirmation', 'skip the confirmation')
+    .alias('d')
+    .action((issueId: string, args: any) => {
+        return new DeleteIssueCommand().execute(issueId, args.skipConfirmation);
     });
 
 startCommander();

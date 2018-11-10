@@ -98,6 +98,7 @@ Available subcommands:
 ```
 find|f [options]            search issues with a query (starts prompt)
 show|s [options] <issueId>  show issue info
+delete|d [options] <issue>  delete an issue by its id
 ```
 
 ##### find
