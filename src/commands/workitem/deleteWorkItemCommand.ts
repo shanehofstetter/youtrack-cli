@@ -1,4 +1,4 @@
-import {YoutrackCliCommand} from "../commands";
+import {YoutrackCliCommand} from "../command";
 import chalk from "chalk";
 import {actionWrapper} from "../../utils/commander";
 import * as inquirer from "inquirer";

@@ -2,7 +2,7 @@ import * as inquirer from "inquirer";
 import chalk from "chalk";
 import {CredentialStore} from "../utils/credentialStore";
 import {Youtrack, YoutrackClient} from "youtrack-rest-client";
-import {YoutrackCliCommand} from "./commands";
+import {YoutrackCliCommand} from "./command";
 import {configStore} from "../utils/configStore";
 import {youtrackConfig} from "../utils/youtrackConfig";
 
