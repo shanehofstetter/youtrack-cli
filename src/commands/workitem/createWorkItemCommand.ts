@@ -45,7 +45,7 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                 message: 'Date:',
                 default: moment().format(getLocaleDateFormat(this.locale)),
                 validate: (date: string) => {
-                    if (!isNaN(Date.parse(date))) {
+                    if (parseDateWithLocale(date, this.locale).isValid()) {
                         return true;
                     }
                     return chalk.red('please provide a valid date');
