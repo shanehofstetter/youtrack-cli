@@ -1,8 +1,7 @@
 import {Field} from "youtrack-rest-client/dist/entities/issue";
 import {toDateString} from "../printer";
 import chalk from "chalk";
-
-const htmlToText = require('html-to-text');
+import {TextRenderer} from "./textRenderer";
 
 chalk.level = 1;
 
@@ -34,7 +33,7 @@ export function formatIssueFields(fields: Field[], filterFields: string[] = []) 
                 }
             }
             if (field.name === 'description') {
-                field.value = formatTextContent(field.value);
+                field.value = TextRenderer.render(field.value);
             }
 
             field.name = chalk.bold(f.name);
@@ -72,30 +71,4 @@ function formatRoles(roleFields: Field[]): string {
     }
 
     return value;
-}
-
-export function formatTextContent(description: string): string {
-    // html content is wrapped inside special tags
-    // example: {html class=lorem}<html>ipsum</html>{html}
-    const htmlRegex = /{html[a-zA-Z=\s]*}([\s\S]*?){html[a-zA-Z=\s]*}/mi;
-
-    const htmlContentMatch = description.match(htmlRegex);
-    if (htmlContentMatch && htmlContentMatch.length > 0) {
-        description = description.replace(new RegExp(htmlRegex, 'gmi'), htmlToText.fromString(htmlContentMatch[1], {
-            ignoreImage: true,
-            ignoreHref: true,
-            tables: true,
-            wordwrap: 120
-        }));
-    }
-
-    // remove {cut} tags (unsure what the semantic is there)
-    description = description.replace(/{cut[\s>]*}/gmi, '');
-
-    // remove large chunks of whitespace
-    while (description.match(/\n\n\n/gm)) {
-        description = description.replace(/\n\n\n/gm, '\n\n');
-    }
-
-    return description;
 }

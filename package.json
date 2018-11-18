@@ -43,6 +43,8 @@
     "html-to-text": "^4.0.0",
     "inquirer": "^6.2.0",
     "keytar": "^4.3.0",
+    "marked": "^0.5.1",
+    "marked-terminal": "shanehofstetter/marked-terminal",
     "moment": "^2.22.2",
     "os-locale": "^3.0.1",
     "table": "^5.1.0",
