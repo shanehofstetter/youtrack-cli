@@ -15,6 +15,7 @@ export class TablePrinter {
                 if (!value) {
                     return '';
                 }
+                // string must not include control characters, table lib throws error otherwise
                 return String(value).replace(/[\n\t\r]/g, ' ');
             });
         });

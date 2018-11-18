@@ -3,7 +3,7 @@ import {actionWrapper, startCommander} from "./utils/commander";
 import {RawPrinter, TablePrinter} from "./utils/printer";
 import {Issue} from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
-import {formatIssueFields} from "./utils/formatters/issueFormatter";
+import {formatTextContent, formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
 import {printError} from "./utils/errorHandler";
 import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
@@ -45,12 +45,19 @@ program
                     RawPrinter.print(issue);
                 } else {
                     if (issue.field) {
-                        const fields = formatIssueFields(issue.field);
+
+                        const fields = formatIssueFields(issue.field, ['description']);
 
                         TablePrinter.print(fields, ['name', 'value'], {1: {width: 80}});
+
+                        const descriptionField = issue.field.find(f => f.name === 'description');
+                        if (descriptionField && typeof descriptionField.value === "string") {
+                            console.log(chalk.bold(chalk.gray(chalk.underline('description:\n'))));
+                            console.log(`${formatTextContent(descriptionField.value)}\n`);
+                        }
                     }
                     if (issue.comment && issue.comment.length > 0) {
-                        console.log(chalk.gray('comments:'));
+                        console.log(chalk.bold(chalk.gray(chalk.underline('comments:\n'))));
 
                         CommentPrinter.printComments(issue.comment, false);
                     }

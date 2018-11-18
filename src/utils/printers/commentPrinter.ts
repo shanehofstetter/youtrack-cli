@@ -1,5 +1,7 @@
 import {Comment} from "youtrack-rest-client";
-import {RawPrinter, TablePrinter, toDateString} from "../printer";
+import {RawPrinter, toDateString} from "../printer";
+import chalk from "chalk";
+import {formatTextContent} from "../formatters/issueFormatter";
 
 export class CommentPrinter {
     public static printComments(comments: Comment[], raw: boolean = false) {
@@ -11,6 +13,9 @@ export class CommentPrinter {
             return {...c, created: toDateString(c.created)};
         });
 
-        TablePrinter.print(formattedComments, ['id', 'author', 'text', 'created', 'deleted'], {2: {width: 40}});
+        for (let comment of formattedComments) {
+            console.log(chalk.bold(chalk.gray(`${comment.author} on ${comment.created} (#${comment.id}):`)));
+            console.log(`${formatTextContent(comment.text)}\n`)
+        }
     }
 }
