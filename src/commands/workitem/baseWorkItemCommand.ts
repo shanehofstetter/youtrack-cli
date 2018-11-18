@@ -1,5 +1,6 @@
-import {YoutrackClient} from "youtrack-rest-client";
+import {Issue, YoutrackClient} from "youtrack-rest-client";
 import chalk from "chalk";
+import {getFormattedErrorMessage} from "../../utils/errorHandler";
 
 const osLocale = require('os-locale');
 
@@ -8,28 +9,37 @@ export abstract class BaseWorkItemCommand {
     protected workTypeNames: string[] = [];
     protected locale: string = "en-US";
     protected youtrackClient: YoutrackClient | null = null;
+    protected issue: Issue | null = null;
 
     protected fetchWorkTypes(issueId: string): Promise<any> {
         // TODO: implement endpoints and/or methods in youtrack-rest-client
 
         if (this.youtrackClient !== null) {
             return this.youtrackClient.issues.byId(issueId).then(issue => {
+                this.issue = issue;
+
                 if (this.youtrackClient) {
                     let projectShortName: any = issue.field.find(f => f.name === 'projectShortName');
                     if (projectShortName && typeof projectShortName.value === 'string') {
                         projectShortName = projectShortName.value;
 
                         const workTypesUrl: string = '/admin/project/' + projectShortName + '/timetracking/worktype';
-                        this.youtrackClient.get(workTypesUrl).then((response) => {
+                        return this.youtrackClient.get(workTypesUrl).then((response) => {
                             if (response.length > 0) {
                                 this.workTypeNames = response.map((wt: any) => wt.name);
                             }
+                        }).catch(error => {
+                            this.issue = null;
+                            return Promise.reject(getFormattedErrorMessage(error));
                         });
                     }
                 }
+            }).catch(error => {
+                return Promise.reject(getFormattedErrorMessage(error));
             });
         }
-        return Promise.reject();
+        // this code should never be reached, the if-clause is required for type-safety reasons.
+        return Promise.reject('unknown error.');
     }
 
     protected detectLocale(): Promise<any> {
@@ -46,11 +56,8 @@ export abstract class BaseWorkItemCommand {
         if (issueId.length > 1) {
             return this.fetchWorkTypes(issueId).then(() => {
                 return Promise.resolve(true);
-            }).catch(() => {
-                const errorMessage: string = chalk.red("issue '")
-                    + chalk.yellow(issueId)
-                    + chalk.red("' does not seem to exist");
-                return Promise.resolve(errorMessage);
+            }).catch((error: string) => {
+                return Promise.resolve(error);
             });
         }
         return Promise.resolve(chalk.red('please provide a valid Issue ID'));

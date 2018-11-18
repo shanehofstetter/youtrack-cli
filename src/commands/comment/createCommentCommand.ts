@@ -2,7 +2,7 @@ import {YoutrackCliCommand} from "../command";
 import {YoutrackClient} from "youtrack-rest-client";
 import chalk from "chalk";
 import {actionWrapper} from "../../utils/commander";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 import * as inquirer from "inquirer";
 
 export class CreateCommentCommand implements YoutrackCliCommand {
@@ -50,6 +50,6 @@ export class CreateCommentCommand implements YoutrackCliCommand {
     private createComment(client: YoutrackClient, issueId: string, comment: string): Promise<any> {
         return client.comments.create(issueId, comment).then(() => {
             console.log(chalk.green(`comment created.`))
-        }).catch(handleError);
+        }).catch(printError);
     }
 }

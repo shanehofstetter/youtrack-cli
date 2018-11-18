@@ -4,7 +4,7 @@ import chalk from "chalk";
 import * as inquirer from "inquirer";
 import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
 import {RawPrinter, TablePrinter} from "../../utils/printer";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 import {getLocaleDateFormat, parseDateWithLocale} from "../../utils/locale";
 import {DurationParser} from "../../utils/parsers/duration";
 import {youtrackConfig} from "../../utils/youtrackConfig";
@@ -23,8 +23,19 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                 type: 'input',
                 name: 'issueId',
                 message: 'Issue ID:',
-                validate: (issueId: any) => {
+                validate: (issueId: string) => {
                     return this.validateIssueIdAndFetchWorkTypes(issueId);
+                },
+                transformer: (issueId: string) => {
+                    if (!this.issue) {
+                        return issueId;
+
+                    }
+                    const summaryField = this.issue.field.find(f => f.name === 'summary');
+                    if (!summaryField) {
+                        return issueId;
+                    }
+                    return `${issueId} (${summaryField.value})`
                 }
             },
             {
@@ -118,6 +129,6 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                 return RawPrinter.print(workItemId);
             }
             TablePrinter.print([{workItemId}], ['workItemId']);
-        }).catch(handleError);
+        }).catch(printError);
     }
 }

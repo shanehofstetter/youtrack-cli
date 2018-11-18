@@ -3,7 +3,7 @@ import chalk from "chalk";
 import {YoutrackClient} from "youtrack-rest-client";
 import {actionWrapper} from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 
 export class DeleteCommentCommand implements YoutrackCliCommand {
 
@@ -41,7 +41,7 @@ export class DeleteCommentCommand implements YoutrackCliCommand {
             return inquirer.prompt(this.getQuestions(client)).then((answers: any) => {
                 return client.comments.delete(answers.issueId, answers.commentId).then(response => {
                     console.log(chalk.green(`deleted Comment ${answers.commentId}`));
-                }).catch(handleError);
+                }).catch(printError);
             });
         });
     }

@@ -2,7 +2,7 @@ import {YoutrackCliCommand} from "../command";
 import chalk from "chalk";
 import {actionWrapper} from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 
 export class DeleteWorkItemCommand implements YoutrackCliCommand {
 
@@ -36,7 +36,7 @@ export class DeleteWorkItemCommand implements YoutrackCliCommand {
             return inquirer.prompt(this.questions).then((answers: any) => {
                 return client.workItems.delete(answers.issueId, answers.workItemId).then(issues => {
                     console.log(chalk.green(`deleted Work-Item ${answers.workItemId}`));
-                }).catch(handleError);
+                }).catch(printError);
             });
         });
     }

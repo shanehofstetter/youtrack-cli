@@ -2,7 +2,7 @@ import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
 import {User} from "youtrack-rest-client/dist/entities/user";
 import {printObject} from "./utils/printer";
-import {handleError} from "./utils/errorHandler";
+import {printError} from "./utils/errorHandler";
 
 const userColumnConfig = {
     0: {
@@ -26,7 +26,7 @@ program
                 printObject(user, {
                     raw: args.raw, columnConfig: userColumnConfig, attributes: visibleUserAttributes
                 });
-            }).catch(handleError);
+            }).catch(printError);
         });
     });
 
@@ -40,7 +40,7 @@ program
                 printObject(user, {
                     raw: args.raw, columnConfig: userColumnConfig, attributes: visibleUserAttributes
                 });
-            }).catch(handleError);
+            }).catch(printError);
         });
     });
 

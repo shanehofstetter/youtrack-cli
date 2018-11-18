@@ -1,7 +1,7 @@
 import {YoutrackCliCommand} from "../command";
 import {actionWrapper} from "../../utils/commander";
 import chalk from "chalk";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 import {YoutrackClient} from "youtrack-rest-client";
 import * as inquirer from "inquirer";
 
@@ -39,6 +39,6 @@ export class DeleteIssueCommand implements YoutrackCliCommand {
     private deleteIssue(client: YoutrackClient): Promise<any> {
         return client.issues.delete(this.issueId).then(response => {
             console.log(chalk.green('issue deleted.'));
-        }).catch(handleError);
+        }).catch(printError);
     }
 }

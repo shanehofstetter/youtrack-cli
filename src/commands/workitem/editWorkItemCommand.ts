@@ -9,7 +9,7 @@ import {formatDuration} from "../../utils/formatters/durationFormatter";
 import {timestampToDate} from "../../utils/printer";
 import {parseDateWithLocale, toLocalizedDateString} from "../../utils/locale";
 import {BaseWorkItemCommand} from "./baseWorkItemCommand";
-import {handleError} from "../../utils/errorHandler";
+import {printError} from "../../utils/errorHandler";
 
 export class EditWorkItemCommand extends BaseWorkItemCommand implements YoutrackCliCommand {
     private issueId: string = '';
@@ -97,9 +97,9 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                             };
                             return client.workItems.edit(this.issueId, workItem).then(() => {
                                 console.log(chalk.green(`Work Item ${this.workItemId} updated.`))
-                            }).catch(handleError);
+                            }).catch(printError);
                         });
-                    }).catch(handleError);
+                    }).catch(printError);
                 });
             })
         });

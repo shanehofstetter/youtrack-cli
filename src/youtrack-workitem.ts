@@ -2,7 +2,7 @@ import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
 import {printObject, RawPrinter, toDateString} from "./utils/printer";
 import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
-import {handleError} from "./utils/errorHandler";
+import {printError} from "./utils/errorHandler";
 import {formatDuration} from "./utils/formatters/durationFormatter";
 import {CreateWorkItemCommand} from "./commands/workitem/createWorkItemCommand";
 import {DeleteWorkItemCommand} from "./commands/workitem/deleteWorkItemCommand";
@@ -48,7 +48,7 @@ program
                     },
                     attributes: ['id', 'date', 'duration', 'description', 'worktype', 'author']
                 });
-            }).catch(handleError);
+            }).catch(printError);
         });
     });
 

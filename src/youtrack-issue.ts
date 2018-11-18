@@ -5,7 +5,7 @@ import {Issue} from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
 import {formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
-import {handleError} from "./utils/errorHandler";
+import {printError} from "./utils/errorHandler";
 import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
 import {CommentPrinter} from "./utils/printers/commentPrinter";
 
@@ -55,7 +55,7 @@ program
                         CommentPrinter.printComments(issue.comment, false);
                     }
                 }
-            }).catch(handleError);
+            }).catch(printError);
         });
     });
 

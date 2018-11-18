@@ -1,7 +1,7 @@
 import * as program from "commander";
 import {actionWrapper, startCommander} from "./utils/commander";
 import {Comment} from "youtrack-rest-client";
-import {handleError} from "./utils/errorHandler";
+import {printError} from "./utils/errorHandler";
 import {CommentPrinter} from "./utils/printers/commentPrinter";
 import {CreateCommentCommand} from "./commands/comment/createCommentCommand";
 import {DeleteCommentCommand} from "./commands/comment/deleteCommentCommand";
@@ -16,7 +16,7 @@ program
         return actionWrapper((client) => {
             return client.comments.all(issueId).then((comments: Comment[]) => {
                 CommentPrinter.printComments(comments, args.raw);
-            }).catch(handleError);
+            }).catch(printError);
         });
     });
 
