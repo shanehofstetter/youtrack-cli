@@ -4,6 +4,8 @@ import {SetupCommand} from "./commands/setupCommand";
 import {PackageInformation} from "./utils/packageInformation";
 import {Command} from "commander";
 
+const updateNotifier = require('update-notifier');
+
 program.version(PackageInformation.get().version);
 
 const subCommands = [
@@ -48,5 +50,8 @@ program
     .action(() => {
         new SetupCommand().execute();
     });
+
+
+updateNotifier({pkg: PackageInformation.get()}).notify({isGlobal: true});
 
 startCommander([].concat.apply([], subCommands.map((c) => [c.command, c.alias])));

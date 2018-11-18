@@ -46,6 +46,7 @@
     "moment": "^2.22.2",
     "os-locale": "^3.0.1",
     "table": "^5.1.0",
+    "update-notifier": "^2.5.0",
     "valid-url": "^1.0.9",
     "youtrack-rest-client": "^0.3.1"
   },
