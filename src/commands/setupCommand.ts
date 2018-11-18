@@ -5,6 +5,7 @@ import {Youtrack, YoutrackClient} from "youtrack-rest-client";
 import {YoutrackCliCommand} from "./command";
 import {configStore} from "../utils/configStore";
 import {youtrackConfig} from "../utils/youtrackConfig";
+import {getFormattedErrorMessage} from "../utils/errorHandler";
 
 const validUrl = require('valid-url');
 
@@ -133,7 +134,7 @@ export class SetupCommand implements YoutrackCliCommand {
                 });
             });
         }).catch((error) => {
-            console.error(chalk.red('problem occurred while connecting to youtrack', error));
+            console.error(chalk.red('problem occurred while connecting to youtrack:', getFormattedErrorMessage(error)));
             return Promise.reject();
         });
     }
