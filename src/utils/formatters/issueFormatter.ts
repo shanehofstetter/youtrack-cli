@@ -1,6 +1,7 @@
 import {Field} from "youtrack-rest-client/dist/entities/issue";
 import {toDateString} from "../printer";
 import chalk from "chalk";
+
 chalk.level = 1;
 
 export function formatIssueFields(fields: Field[]) {
@@ -40,18 +41,28 @@ function formatArrayOfObjects(field: Field): Field {
         return field;
     }
     if ('role' in field.value[0] && typeof field.value[0].role === 'string') {
-        const roles: string[] = Array.from(new Set(field.value.map((v: any) => v.role).filter((v: any) => !!v)));
-        let value = '';
-        for (let i = 0; i < roles.length; i++) {
-            const role: string = roles[i];
-            value += role + ": " + field.value.filter((v: any) => v.role === role).map((v: any) => v.value).join(', ');
-            if (i > 0) {
-                value += ", ";
-            }
-        }
-        field.value = value;
+        field.value = formatRoles(field.value);
     } else {
         field.value = field.value.map((v: any) => v.value).join(', ');
     }
     return field;
+}
+
+function formatRoles(roleFields: Field[]): string {
+    let value: string = '';
+    // first get a set of all roles
+    const roles: string[] = Array.from(new Set(roleFields.map((v: any) => v.role).filter((v: any) => !!v)));
+
+    for (let index = 0; index < roles.length; index++) {
+        // get the issues/values by role and join them
+        const role: string = roles[index];
+        value += role + ": " + roleFields.filter((v: any) => v.role === role).map((v: any) => v.value).join(', ');
+        // -> example: "parent for: T1-2, T1-3"
+        if (index > 0) {
+            value += ", ";
+        }
+        // -> example: "parent for: T1-2, T1-3, subtask of: T1-5"
+    }
+
+    return value;
 }
