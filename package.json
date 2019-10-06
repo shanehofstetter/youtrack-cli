@@ -43,7 +43,7 @@
     "html-to-text": "^4.0.0",
     "inquirer": "^6.5.2",
     "keytar": "^4.13.0",
-    "marked": "^0.5.2",
+    "marked": "^0.7.0",
     "marked-terminal": "github:shanehofstetter/marked-terminal",
     "moment": "^2.24.0",
     "os-locale": "^3.1.0",
