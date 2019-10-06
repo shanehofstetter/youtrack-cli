@@ -54,4 +54,4 @@ program
 
 updateNotifier({pkg: PackageInformation.get()}).notify({isGlobal: true});
 
-startCommander([].concat.apply([], subCommands.map((c) => [c.command, c.alias])));
+startCommander([].concat(...<[]>subCommands.map((c) => [c.command, c.alias])));
