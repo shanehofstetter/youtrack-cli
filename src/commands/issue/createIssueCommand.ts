@@ -60,6 +60,7 @@ export class CreateIssueCommand implements YoutrackCliCommand {
                     summary: answers.summary,
                     description: answers.description,
                     project: answers.project,
+                    type: answers.type,
                     assignee: undefined,
                 };
                 if (answers.assignee === '') {
