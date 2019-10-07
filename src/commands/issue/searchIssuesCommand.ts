@@ -5,6 +5,7 @@ import * as inquirer from "inquirer";
 import {printObject} from "../../utils/printer";
 import {formatIssueFields} from "../../utils/formatters/issueFormatter";
 import {printError} from "../../utils/errorHandler";
+import { YoutrackClient } from "youtrack-rest-client";
 
 export class SearchIssuesCommand implements YoutrackCliCommand {
 
@@ -20,35 +21,42 @@ export class SearchIssuesCommand implements YoutrackCliCommand {
         }
     }];
 
-    public execute(filterOptions: {}, fields: string[], raw: boolean): Promise<any> {
+    private printIssues(filterOptions: {}, fields: string[], raw: boolean, query: string, client: YoutrackClient) {
+        return client.issues.search(query, filterOptions).then(issues => {
+
+            const fieldNames: Set<string> = new Set();
+
+            const formattedIssues = issues.map(i => {
+                const issue: any = {id: i.id};
+                if (i.field) {
+                    const formattedFields = formatIssueFields(i.field.filter(f => fields.indexOf(f.name) >= 0));
+                    formattedFields.forEach(f => {
+                        issue[f.name] = f.value;
+                        fieldNames.add(f.name);
+                    });
+                }
+                return issue;
+            });
+
+            printObject(formattedIssues, {
+                raw,
+                attributes: ['id', ...Array.from(fieldNames)],
+                columnConfig: {
+                    1: {
+                        width: 50
+                    }
+                }
+            });
+        }).catch(printError);
+    }
+    
+    public execute(filterOptions: {}, fields: string[], raw: boolean, query: string): Promise<any> {
         return actionWrapper((client) => {
+            if (query) {
+                return this.printIssues(filterOptions, fields, raw, query, client);
+            }
             return inquirer.prompt(this.queryPrompt).then((answers: any) => {
-                return client.issues.search(answers.query, filterOptions).then(issues => {
-
-                    const fieldNames: Set<string> = new Set();
-
-                    const formattedIssues = issues.map(i => {
-                        const issue: any = {id: i.id};
-                        if (i.field) {
-                            const formattedFields = formatIssueFields(i.field.filter(f => fields.indexOf(f.name) >= 0));
-                            formattedFields.forEach(f => {
-                                issue[f.name] = f.value;
-                                fieldNames.add(f.name);
-                            });
-                        }
-                        return issue;
-                    });
-
-                    printObject(formattedIssues, {
-                        raw,
-                        attributes: ['id', ...Array.from(fieldNames)],
-                        columnConfig: {
-                            1: {
-                                width: 50
-                            }
-                        }
-                    });
-                }).catch(printError);
+                return this.printIssues(filterOptions, fields, raw, answers.query, client);
             });
         });
     }
