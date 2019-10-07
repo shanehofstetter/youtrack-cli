@@ -105,6 +105,7 @@ delete|d [options] <issue>  delete an issue by its id
 
 ```
 Options:
+  -q, --query           non-interactive query
   -r, --raw             print raw json
   -m, --max <max>       limit number of issues shown
   -f, --fields <field>  which fields to display
