@@ -106,6 +106,7 @@ create|c                    creates an issue (interactive)
 
 ```
 Options:
+  -q, --query           non-interactive query
   -r, --raw             print raw json
   -m, --max <max>       limit number of issues shown
   -f, --fields <field>  which fields to display

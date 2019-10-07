@@ -15,6 +15,7 @@ program
     .command('find')
     .alias('f')
     .description('search issues by query (interactive)')
+    .option('-q, --query <query>', 'non-interactive query')
     .option('-r, --raw', 'print raw json')
     .option('-m, --max <max>', 'limit number of issues shown')
     .option('-f, --fields <field>', 'which fields to display', function (field, fields = []) {
@@ -31,8 +32,7 @@ program
         if (cmd.max && cmd.max > 0) {
             filterOptions.max = cmd.max;
         }
-
-        return new SearchIssuesCommand().execute(filterOptions, fields, cmd.raw);
+        return new SearchIssuesCommand().execute(filterOptions, fields, cmd.raw, cmd.query);
     });
 
 program
