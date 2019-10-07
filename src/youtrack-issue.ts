@@ -7,6 +7,7 @@ import {formatIssueFields} from "./utils/formatters/issueFormatter";
 import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
 import {printError} from "./utils/errorHandler";
 import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
+import {CreateIssueCommand} from "./commands/issue/createIssueCommand";
 import {CommentPrinter} from "./utils/printers/commentPrinter";
 import {TextRenderer} from "./utils/formatters/textRenderer";
 
@@ -74,6 +75,14 @@ program
     .alias('d')
     .action((issueId: string, args: any) => {
         return new DeleteIssueCommand().execute(issueId, args.skipConfirmation);
+    });
+
+program
+    .command('create')
+    .description('creates an issue (interactive)')
+    .alias('c')
+    .action(() => {
+        return new CreateIssueCommand().execute();
     });
 
 startCommander();
