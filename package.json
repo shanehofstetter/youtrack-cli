@@ -15,7 +15,8 @@
     "build": "tsc",
     "dev": "watch 'npm run build' src",
     "prepare": "npm run build",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "lint": "tslint src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "moment": "^2.24.0",
     "os-locale": "^3.1.0",
     "table": "^5.4.6",
+    "tslint": "^5.20.0",
     "update-notifier": "^2.5.0",
     "valid-url": "^1.0.9",
     "youtrack-rest-client": "^0.3.2"

@@ -1,14 +1,14 @@
+// tslint:disable
 import {Moment} from "moment";
 
 const moment = require('moment');
-
 
 const formats: { [key: string]: string } = {
     "ar-SA": "DD/MM/YY",
     "bg-BG": "DD.M.YYYY",
     "ca-ES": "DD/MM/YYYY",
-    "zh-TW": "YYYY/M/D",
     "cs-CZ": "D.M.YYYY",
+    "zh-TW": "YYYY/M/D",
     "da-DK": "DD-MM-YYYY",
     "de-DE": "DD.MM.YYYY",
     "el-GR": "D/M/YYYY",
@@ -213,7 +213,7 @@ const formats: { [key: string]: string } = {
     "en-SG": "D/M/YYYY",
     "ug-CN": "YYYY-M-D",
     "sr-Cyrl-BA": "D.M.YYYY",
-    "es-US": "M/D/YYYY"
+    "es-US": "M/D/YYYY",
 };
 
 export function getLocaleDateFormat(locale: string): string {
@@ -226,7 +226,7 @@ export function parseDateWithLocale(date: string, locale: string): Moment {
 }
 
 export function toLocalizedDateString(date: Moment | Date, locale: string): string {
-    if ("format" in date){
+    if ("format" in date) {
         return date.format(getLocaleDateFormat(locale));
     }
     return moment(date).format(getLocaleDateFormat(locale));

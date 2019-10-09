@@ -1,5 +1,6 @@
-import {table, getBorderCharacters} from "table";
+// tslint:disable max-classes-per-file
 import chalk from "chalk";
+import {getBorderCharacters, table} from "table";
 
 export class RawPrinter {
     public static print(object: any) {
@@ -9,8 +10,8 @@ export class RawPrinter {
 
 export class TablePrinter {
     public static print(objects: any[], attributes: string[], columnConfig: {} = {}, columnDefault: {} = {}) {
-        const rows = objects.map(obj => {
-            return attributes.map(attr => {
+        const rows = objects.map((obj) => {
+            return attributes.map((attr) => {
                 const value = obj[attr];
                 if (!value) {
                     return '';
@@ -25,10 +26,10 @@ export class TablePrinter {
 
         const config = {
             border: getBorderCharacters(`norc`),
+            columnDefault,
             columns: {
-                ...columnConfig
+                ...columnConfig,
             },
-            columnDefault
         };
         console.log(table(rows, config));
     }
@@ -42,12 +43,13 @@ export function printObject(object: any, options: any) {
         if (!Array.isArray(object)) {
             object = [object];
         }
-        TablePrinter.print(object, attributes, options['columnConfig'] || {}, options['columnDefault'] || {});
+        TablePrinter.print(object, attributes, options.columnConfig || {}, options.columnDefault || {});
     }
 }
 
 export function timestampToDate(timestamp: string | number): Date {
     if (typeof timestamp !== 'number') {
+        // tslint:disable-next-line radix
         timestamp = parseInt(timestamp);
     }
     return new Date(timestamp);
