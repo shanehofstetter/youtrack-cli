@@ -10,6 +10,7 @@ import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
 import {CreateIssueCommand} from "./commands/issue/createIssueCommand";
 import {CommentPrinter} from "./utils/printers/commentPrinter";
 import {TextRenderer} from "./utils/formatters/textRenderer";
+import { UpdateIssueCommand } from "./commands/issue/updateIssueCommand";
 
 program
     .command('find')
@@ -83,6 +84,14 @@ program
     .alias('c')
     .action(() => {
         return new CreateIssueCommand().execute();
+    });
+
+program
+    .command('update <issueId>')
+    .description('updates an issue (interactive)')
+    .alias('u')
+    .action((issueId: string, args: any) => {
+        return new UpdateIssueCommand().execute(issueId);
     });
 
 startCommander();
