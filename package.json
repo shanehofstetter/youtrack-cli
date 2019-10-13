@@ -13,10 +13,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "watch 'npm run build' src",
-    "prepare": "npm run build",
+    "dev": "watch 'npm run lint-fix && npm run build' src",
+    "prepare": "npm run lint && npm run build",
     "postversion": "git push && git push --tags",
-    "lint": "tslint src/**/*.ts"
+    "lint": "tslint src/**/*.ts",
+    "lint-fix": "tslint src/**/*.ts --fix"
   },
   "repository": {
     "type": "git",
