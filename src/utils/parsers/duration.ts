@@ -1,4 +1,4 @@
-import {TimeTrackingConfig} from "../../types/timeTrackingConfig";
+import { TimeTrackingConfig } from "../../types/timeTrackingConfig";
 
 export class DurationParser {
     public constructor(private configuration: TimeTrackingConfig) {

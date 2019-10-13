@@ -1,8 +1,8 @@
 import * as program from 'commander';
-import {startCommander} from "./utils/commander";
-import {SetupCommand} from "./commands/setupCommand";
-import {PackageInformation} from "./utils/packageInformation";
-import {Command} from "commander";
+import { Command } from 'commander';
+import { startCommander } from "./utils/commander";
+import { SetupCommand } from "./commands/setupCommand";
+import { PackageInformation } from "./utils/packageInformation";
 
 const updateNotifier = require('update-notifier');
 
@@ -52,6 +52,6 @@ program
     });
 
 
-updateNotifier({pkg: PackageInformation.get()}).notify({isGlobal: true});
+updateNotifier({ pkg: PackageInformation.get() }).notify({ isGlobal: true });
 
 startCommander([].concat(...<[]>subCommands.map((c) => [c.command, c.alias])));

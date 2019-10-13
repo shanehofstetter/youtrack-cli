@@ -1,11 +1,10 @@
-import {YoutrackCliCommand} from "../command";
-import {actionWrapper} from "../../utils/commander";
+import { YoutrackCliCommand } from "../command";
+import { actionWrapper } from "../../utils/commander";
 import chalk from "chalk";
 import * as inquirer from "inquirer";
-import {printObject} from "../../utils/printer";
-import {formatIssueFields} from "../../utils/formatters/issueFormatter";
-import {printError} from "../../utils/errorHandler";
-import { YoutrackClient } from "youtrack-rest-client";
+import { printObject } from "../../utils/printer";
+import { printError } from "../../utils/errorHandler";
+import { ReducedIssue, YoutrackClient } from "youtrack-rest-client";
 
 export class SearchIssuesCommand implements YoutrackCliCommand {
 
@@ -22,25 +21,16 @@ export class SearchIssuesCommand implements YoutrackCliCommand {
     }];
 
     private printIssues(filterOptions: {}, fields: string[], raw: boolean, query: string, client: YoutrackClient) {
-        return client.issues.search(query, filterOptions).then(issues => {
+        return client.issues.search(query, filterOptions).then((issues: ReducedIssue[]) => {
 
-            const fieldNames: Set<string> = new Set();
-
-            const formattedIssues = issues.map(i => {
-                const issue: any = {id: i.id};
-                if (i.field) {
-                    const formattedFields = formatIssueFields(i.field.filter(f => fields.indexOf(f.name) >= 0));
-                    formattedFields.forEach(f => {
-                        issue[f.name] = f.value;
-                        fieldNames.add(f.name);
-                    });
-                }
-                return issue;
-            });
+            const formattedIssues = issues.map(i => ({
+                humanId: `${i.project && i.project.shortName}-${i.numberInProject}`,
+                ...i
+            }));
 
             printObject(formattedIssues, {
                 raw,
-                attributes: ['id', ...Array.from(fieldNames)],
+                attributes: ['humanId', ...fields],
                 columnConfig: {
                     1: {
                         width: 50
@@ -49,7 +39,7 @@ export class SearchIssuesCommand implements YoutrackCliCommand {
             });
         }).catch(printError);
     }
-    
+
     public execute(filterOptions: {}, fields: string[], raw: boolean, query: string): Promise<any> {
         return actionWrapper((client) => {
             if (query) {

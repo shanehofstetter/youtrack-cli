@@ -1,5 +1,5 @@
-import {HtmlRenderer} from "./htmlRenderer";
-import {MarkdownRenderer} from "./markdownRenderer";
+import { HtmlRenderer } from "./htmlRenderer";
+import { MarkdownRenderer } from "./markdownRenderer";
 
 export class TextRenderer {
     public static render(text: string): string {

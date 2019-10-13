@@ -1,15 +1,14 @@
-import {Field} from "youtrack-rest-client/dist/entities/issue";
-import {toDateString} from "../printer";
+import { toDateString } from "../printer";
 import chalk from "chalk";
-import {TextRenderer} from "./textRenderer";
+import { IssueCustomField } from "youtrack-rest-client/dist/entities/issueCustomField";
 
 chalk.level = 1;
 
-export function formatIssueFields(fields: Field[], filterFields: string[] = []) {
+export function formatIssueFields(fields: IssueCustomField[], filterFields: string[] = []) {
     return fields
         .filter(f => filterFields.indexOf(f.name) === -1)
         .map(f => {
-            const {...field}: any = f;
+            const { ...field }: any = f;
 
             if (['created', 'updated', 'resolved'].indexOf(field.name) >= 0 && typeof field.value === 'string') {
                 field.value = toDateString(field.value);
@@ -24,16 +23,20 @@ export function formatIssueFields(fields: Field[], filterFields: string[] = []) 
                 field.value = field.value === 'true' ? 'Yes' : 'No';
             }
 
-            if ("color" in field && !!field.color) {
-                if (field.color.bg) {
-                    field.value = chalk.bgHex(field.color.bg)(field.value);
+            if (field.value && typeof field.value.color === 'object') {
+                let value = field.value.name;
+                if (field.value.color.background) {
+                    value = chalk.bgHex(field.value.color.background)(value);
                 }
-                if (field.color.fg) {
-                    field.value = chalk.hex(field.color.fg)(field.value);
+                if (field.value.color.foreground) {
+                    value = chalk.hex(field.value.color.foreground)(value);
                 }
+                field.value = value;
             }
-            if (field.name === 'description') {
-                field.value = TextRenderer.render(field.value);
+
+            if (field.value && typeof field.value === 'object' && field.value.name) {
+                // console.log(field);
+                field.value = field.value.name;
             }
 
             field.name = chalk.bold(f.name);
@@ -42,19 +45,19 @@ export function formatIssueFields(fields: Field[], filterFields: string[] = []) 
         });
 }
 
-function formatArrayOfObjects(field: Field): Field {
+function formatArrayOfObjects(field: IssueCustomField): IssueCustomField {
     if (!Array.isArray(field.value)) {
         return field;
     }
     if ('role' in field.value[0] && typeof field.value[0].role === 'string') {
-        field.value = formatRoles(field.value);
+        field.value.name = formatRoles(field.value);
     } else {
-        field.value = field.value.map((v: any) => v.value).join(', ');
+        field.value.name = field.value.map((v: any) => v.value).join(', ');
     }
     return field;
 }
 
-function formatRoles(roleFields: Field[]): string {
+function formatRoles(roleFields: IssueCustomField[]): string {
     let value: string = '';
     // first get a set of all roles
     const roles: string[] = Array.from(new Set(roleFields.map((v: any) => v.role).filter((v: any) => !!v)));
