@@ -1,9 +1,9 @@
-import {YoutrackLoginOptions, YoutrackTokenOptions} from "youtrack-rest-client/dist/options/youtrack_options";
-import {Credentials, CredentialStore} from "./credentialStore";
-import {configStore} from "./configStore";
 import {Youtrack} from "youtrack-rest-client";
+import {YoutrackLoginOptions, YoutrackTokenOptions} from "youtrack-rest-client/dist/options/youtrack_options";
 import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
 import {TimeTrackingConfig} from "../types/timeTrackingConfig";
+import {configStore} from "./configStore";
+import {Credentials, CredentialStore} from "./credentialStore";
 
 export type YoutrackBaseConfigType = YoutrackLoginOptions | YoutrackTokenOptions | null;
 
@@ -22,7 +22,7 @@ export class YoutrackConfig {
                 if (configStore.get('authentication_type') === 'token') {
                     this.config = {
                         baseUrl: configStore.get('base_url'),
-                        token: credentials.password
+                        token: credentials.password,
                     };
                     return this.config;
                 }
@@ -34,7 +34,7 @@ export class YoutrackConfig {
                 return this.config;
             }
             return null;
-        })
+        });
     }
 
     public getYoutrackInstance(): Promise<YoutrackClient> {

@@ -15,5 +15,9 @@ addons:
 install:
 - npm install
 
+lint:
+- npm run lint
+
 script:
 - npm run build
+

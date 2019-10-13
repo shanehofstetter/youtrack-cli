@@ -1,72 +1,73 @@
-import * as inquirer from "inquirer";
 import chalk from "chalk";
-import {CredentialStore} from "../utils/credentialStore";
+import * as inquirer from "inquirer";
 import {Youtrack, YoutrackClient} from "youtrack-rest-client";
-import {YoutrackCliCommand} from "./command";
 import {configStore} from "../utils/configStore";
-import {youtrackConfig} from "../utils/youtrackConfig";
+import {CredentialStore} from "../utils/credentialStore";
 import {getFormattedErrorMessage} from "../utils/errorHandler";
+import {youtrackConfig} from "../utils/youtrackConfig";
+import {YoutrackCliCommand} from "./command";
 
+// tslint:disable-next-line
 const validUrl = require('valid-url');
 
 export class SetupCommand implements YoutrackCliCommand {
 
     private readonly setupQuestions = [
         {
-            type: 'input',
-            name: 'base_url',
             message: 'Youtrack Url (e.g. "https://your-organisation.myjetbrains.com/youtrack"',
+            name: 'base_url',
+            type: 'input',
             validate: (url: string) => {
                 if (validUrl.isUri(url)) {
                     return true;
                 }
                 return `${url} does not seem to be a valid URL. Did you include the scheme (http/https)?`;
-            }
+            },
         },
         {
-            type: 'list',
-            name: 'authentication_type',
-            message: 'Please select your preferred authentication type:',
             choices: [{
                 name: 'Username/Password',
-                value: "credentials"
+                value: "credentials",
             }, {
                 name: 'Permanent Token',
-                value: 'token'
-            }]
+                value: 'token',
+            }],
+            message: 'Please select your preferred authentication type:',
+            name: 'authentication_type',
+            type: 'list',
         },
         {
-            type: 'input',
-            name: 'username',
             message: 'Username:',
+            name: 'username',
+            type: 'input',
             when: (answers: any) => {
                 return answers.authentication_type === 'credentials';
-            }
+            },
         },
         {
-            type: 'password',
-            name: 'password',
             message: 'Password:',
+            name: 'password',
+            type: 'password',
             when: (answers: any) => {
                 return answers.authentication_type === 'credentials';
-            }
+            },
         },
         {
-            type: 'password',
-            name: 'token',
             message: 'Permanent Token:',
+            name: 'token',
+            type: 'password',
             when: (answers: any) => {
                 return answers.authentication_type === 'token';
-            }
-        }
+            },
+        },
     ];
 
     private readonly confirm = [
         {
-            type: 'confirm',
-            name: 'override',
             message: 'You already configured the cli, do you really want to override the previous configuration?',
-        }
+            name: 'override',
+            type: 'confirm',
+        },
     ];
 
     public execute(args = []): any {
@@ -85,7 +86,7 @@ export class SetupCommand implements YoutrackCliCommand {
     }
 
     private runSetup(): void {
-        inquirer.prompt(this.setupQuestions).then(answers => {
+        inquirer.prompt(this.setupQuestions).then((answers) => {
             this.storeConfig(answers).then(() => {
                 this.checkAccess().then((client) => {
                     this.storeTimeTrackingConfig(client).then(() => {
@@ -100,7 +101,7 @@ export class SetupCommand implements YoutrackCliCommand {
         return Promise.resolve(client.get('/admin/timetracking').then((response) => {
             youtrackConfig.setTimeTrackingConfig(response);
             return Promise.resolve();
-        }).catch(error => {
+        }).catch((error) => {
             const timetrackingConfig = youtrackConfig.getTimeTrackingConfig();
             console.log(chalk.yellow(`could not get timetracking configuration (most probably because you lack permissions), using defaults (${timetrackingConfig.hoursADay}h per day, ${timetrackingConfig.daysAWeek} days per week)`));
             return Promise.resolve();
@@ -118,12 +119,12 @@ export class SetupCommand implements YoutrackCliCommand {
     }
 
     private checkAccess(): Promise<YoutrackClient> {
-        return youtrackConfig.get().then(config => {
+        return youtrackConfig.get().then((config) => {
             if (config === null) {
                 console.error(chalk.red('configuration seems to be invalid. try to run setup again.'));
                 return Promise.reject();
             }
-            return new Youtrack(config).login().then(client => {
+            return new Youtrack(config).login().then((client) => {
                 if ("password" in config) {
                     console.log(chalk.green('login successful.'));
                     return Promise.resolve(client);

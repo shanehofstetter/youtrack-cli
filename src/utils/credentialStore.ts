@@ -1,5 +1,5 @@
-import * as keytar from 'keytar';
 import chalk from "chalk";
+import * as keytar from 'keytar';
 
 export interface Credentials {
     account: string;
@@ -16,13 +16,13 @@ export class CredentialStore {
                 return credentials[0];
             }
             return null;
-        })
+        });
     }
 
     public static set(username: string, password: string): Promise<void> {
         return keytar.findCredentials(SERVICE_NAME).then((credentials) => {
             return Promise.all(credentials.map((credential) => {
-                keytar.deletePassword(SERVICE_NAME, credential.account)
+                keytar.deletePassword(SERVICE_NAME, credential.account);
             })).then(() => {
                 return keytar.setPassword(SERVICE_NAME, username, password);
             });
