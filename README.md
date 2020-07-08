@@ -10,7 +10,7 @@ Command Line Tool for interacting with youtrack
 npm install -g youtrack-cli
 ```
 ```
-yarn add youtrack-cli
+yarn global add youtrack-cli
 ```
 
 
