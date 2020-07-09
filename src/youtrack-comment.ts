@@ -1,11 +1,11 @@
 import * as program from "commander";
-import {actionWrapper, startCommander} from "./utils/commander";
-import {Comment} from "youtrack-rest-client";
-import {printError} from "./utils/errorHandler";
-import {CommentPrinter} from "./utils/printers/commentPrinter";
-import {CreateCommentCommand} from "./commands/comment/createCommentCommand";
-import {DeleteCommentCommand} from "./commands/comment/deleteCommentCommand";
-import {EditCommentCommand} from "./commands/comment/editCommentCommand";
+import { actionWrapper, startCommander } from "./utils/commander";
+import { printError } from "./utils/errorHandler";
+import { CommentPrinter } from "./utils/printers/commentPrinter";
+import { CreateCommentCommand } from "./commands/comment/createCommentCommand";
+import { DeleteCommentCommand } from "./commands/comment/deleteCommentCommand";
+import { EditCommentCommand } from "./commands/comment/editCommentCommand";
+import { IssueComment } from "youtrack-rest-client";
 
 program
     .command('list <issueId>')
@@ -14,7 +14,7 @@ program
     .option('-r, --raw', 'print raw json')
     .action((issueId, args) => {
         return actionWrapper((client) => {
-            return client.comments.all(issueId).then((comments: Comment[]) => {
+            return client.comments.all(issueId).then((comments: IssueComment[]) => {
                 CommentPrinter.printComments(comments, args.raw);
             }).catch(printError);
         });

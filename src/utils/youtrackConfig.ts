@@ -1,11 +1,11 @@
-import {Youtrack} from "youtrack-rest-client";
-import {YoutrackLoginOptions, YoutrackTokenOptions} from "youtrack-rest-client/dist/options/youtrack_options";
-import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
-import {TimeTrackingConfig} from "../types/timeTrackingConfig";
-import {configStore} from "./configStore";
-import {Credentials, CredentialStore} from "./credentialStore";
+import { Youtrack } from "youtrack-rest-client";
+import { YoutrackTokenOptions } from "youtrack-rest-client/dist/options/youtrack_options";
+import { YoutrackClient } from "youtrack-rest-client/dist/youtrack";
+import { TimeTrackingConfig } from "../types/timeTrackingConfig";
+import { configStore } from "./configStore";
+import { Credentials, CredentialStore } from "./credentialStore";
 
-export type YoutrackBaseConfigType = YoutrackLoginOptions | YoutrackTokenOptions | null;
+export type YoutrackBaseConfigType = YoutrackTokenOptions | null;
 
 export class YoutrackConfig {
 
@@ -26,11 +26,6 @@ export class YoutrackConfig {
                     };
                     return this.config;
                 }
-                this.config = {
-                    baseUrl: configStore.get('base_url'),
-                    login: credentials.account,
-                    password: credentials.password,
-                };
                 return this.config;
             }
             return null;
@@ -40,7 +35,7 @@ export class YoutrackConfig {
     public getYoutrackInstance(): Promise<YoutrackClient> {
         return this.get().then((config) => {
             if (config) {
-                return new Youtrack(config).login();
+                return new Youtrack(config);
             }
             return Promise.reject();
         });
@@ -55,7 +50,7 @@ export class YoutrackConfig {
             this.timeTrackingConfig = timetrackingConfig;
             return timetrackingConfig;
         } else {
-            timetrackingConfig = {hoursADay: 8, daysAWeek: 5};
+            timetrackingConfig = { hoursADay: 8, daysAWeek: 5 };
             configStore.set('timetracking', timetrackingConfig);
         }
         return timetrackingConfig;

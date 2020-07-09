@@ -1,6 +1,6 @@
 // tslint:disable max-classes-per-file
 import chalk from "chalk";
-import {getBorderCharacters, table} from "table";
+import { getBorderCharacters, table } from "table";
 
 export class RawPrinter {
     public static print(object: any) {
@@ -56,6 +56,10 @@ export function timestampToDate(timestamp: string | number): Date {
 }
 
 export function toDateString(timestamp: string | number, showTime: boolean = true): string {
+    if (!timestamp) {
+        return '';
+    }
+
     const date = timestampToDate(timestamp);
     if (showTime) {
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;

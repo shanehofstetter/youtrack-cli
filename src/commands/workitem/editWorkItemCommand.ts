@@ -1,15 +1,14 @@
-import {YoutrackCliCommand} from "../command";
+import { YoutrackCliCommand } from "../command";
 import chalk from "chalk";
-import {actionWrapper} from "../../utils/commander";
+import { actionWrapper } from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {DurationParser} from "../../utils/parsers/duration";
-import {youtrackConfig} from "../../utils/youtrackConfig";
-import {WorkItem} from "youtrack-rest-client";
-import {formatDuration} from "../../utils/formatters/durationFormatter";
-import {timestampToDate} from "../../utils/printer";
-import {parseDateWithLocale, toLocalizedDateString} from "../../utils/locale";
-import {BaseWorkItemCommand} from "./baseWorkItemCommand";
-import {printError} from "../../utils/errorHandler";
+import { DurationParser } from "../../utils/parsers/duration";
+import { youtrackConfig } from "../../utils/youtrackConfig";
+import { WorkItem } from "youtrack-rest-client";
+import { timestampToDate } from "../../utils/printer";
+import { parseDateWithLocale, toLocalizedDateString } from "../../utils/locale";
+import { BaseWorkItemCommand } from "./baseWorkItemCommand";
+import { printError } from "../../utils/errorHandler";
 
 export class EditWorkItemCommand extends BaseWorkItemCommand implements YoutrackCliCommand {
     private issueId: string = '';
@@ -45,7 +44,7 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                 type: 'input',
                 name: 'duration',
                 message: 'Duration:',
-                default: formatDuration(workItem.duration),
+                default: workItem.duration && workItem.duration.presentation,
                 validate: (duration: string) => {
                     if (new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(duration) > 0) {
                         return true;
@@ -57,7 +56,7 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                 type: 'input',
                 name: 'date',
                 message: 'Date:',
-                default: toLocalizedDateString(timestampToDate(workItem.date), this.locale),
+                default: toLocalizedDateString(timestampToDate(<number>workItem.date), this.locale),
                 validate: (date: string) => {
                     if (parseDateWithLocale(date, this.locale).isValid()) {
                         return true;
@@ -69,7 +68,7 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                 type: 'input',
                 name: 'description',
                 message: 'Description:',
-                default: workItem.description
+                default: workItem.text
             }
         ]
     }
@@ -91,11 +90,13 @@ export class EditWorkItemCommand extends BaseWorkItemCommand implements Youtrack
                         return inquirer.prompt(this.getWorkItemQuestions(workItem)).then((answers: any) => {
                             const workItem: WorkItem = {
                                 id: this.workItemId,
-                                duration: new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(answers.duration),
-                                description: answers.description,
+                                duration: {
+                                    minutes: new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(answers.duration)
+                                },
+                                text: answers.description,
                                 date: parseDateWithLocale(answers.date, this.locale).toDate().getTime()
                             };
-                            return client.workItems.edit(this.issueId, workItem).then(() => {
+                            return client.workItems.update(this.issueId, workItem).then(() => {
                                 console.log(chalk.green(`Work Item ${this.workItemId} updated.`))
                             }).catch(printError);
                         });

@@ -1,9 +1,9 @@
-import {YoutrackCliCommand} from "../command";
+import { YoutrackCliCommand } from "../command";
 import chalk from "chalk";
-import {YoutrackClient} from "youtrack-rest-client";
-import {actionWrapper} from "../../utils/commander";
+import { YoutrackClient } from "youtrack-rest-client";
+import { actionWrapper } from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {printError} from "../../utils/errorHandler";
+import { printError } from "../../utils/errorHandler";
 
 export class EditCommentCommand implements YoutrackCliCommand {
 
@@ -14,12 +14,11 @@ export class EditCommentCommand implements YoutrackCliCommand {
                 name: 'issueId',
                 message: 'Issue ID:',
                 validate: (issueId: any) => {
-                    return client.issues.exists(issueId).then(exists => {
-                        if (!exists) {
+                    return client.issues.byId(issueId)
+                        .then(exists => true)
+                        .catch(() => {
                             return chalk.red(`issue ${issueId} does not exist`);
-                        }
-                        return true;
-                    });
+                        });
                 }
             },
             {
@@ -50,7 +49,10 @@ export class EditCommentCommand implements YoutrackCliCommand {
     public execute(...args: any[]): any {
         return actionWrapper((client) => {
             return inquirer.prompt(this.getQuestions(client)).then((answers: any) => {
-                return client.comments.update(answers.issueId, answers.commentId, answers.comment).then(response => {
+                return client.comments.update(answers.issueId, {
+                    id: answers.commentId,
+                    text: answers.comment
+                }).then(response => {
                     console.log(chalk.green(`updated Comment ${answers.commentId}`));
                 }).catch(printError);
             });

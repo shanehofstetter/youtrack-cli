@@ -1,5 +1,5 @@
 // tslint:disable
-import {Moment} from "moment";
+import { Moment } from "moment";
 
 const moment = require('moment');
 

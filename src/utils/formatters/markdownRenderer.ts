@@ -2,7 +2,7 @@ const marked = require('marked');
 const TerminalRenderer = require('marked-terminal');
 
 marked.setOptions({
-    renderer: new TerminalRenderer({listitem: (body: any) => body}),
+    renderer: new TerminalRenderer({ listitem: (body: any) => body }),
     mangle: false
 });
 

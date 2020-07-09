@@ -1,15 +1,15 @@
 import * as program from "commander";
-import {actionWrapper, startCommander} from "./utils/commander";
-import {RawPrinter, TablePrinter} from "./utils/printer";
-import {Issue} from "youtrack-rest-client/dist/entities/issue";
+import { actionWrapper, startCommander } from "./utils/commander";
+import { RawPrinter, TablePrinter } from "./utils/printer";
+import { Issue } from "youtrack-rest-client/dist/entities/issue";
 import chalk from "chalk";
-import {formatIssueFields} from "./utils/formatters/issueFormatter";
-import {SearchIssuesCommand} from "./commands/issue/searchIssuesCommand";
-import {printError} from "./utils/errorHandler";
-import {DeleteIssueCommand} from "./commands/issue/deleteIssueCommand";
-import {CreateIssueCommand} from "./commands/issue/createIssueCommand";
-import {CommentPrinter} from "./utils/printers/commentPrinter";
-import {TextRenderer} from "./utils/formatters/textRenderer";
+import { formatIssueFields } from "./utils/formatters/issueFormatter";
+import { SearchIssuesCommand } from "./commands/issue/searchIssuesCommand";
+import { printError } from "./utils/errorHandler";
+import { DeleteIssueCommand } from "./commands/issue/deleteIssueCommand";
+import { CreateIssueCommand } from "./commands/issue/createIssueCommand";
+import { CommentPrinter } from "./utils/printers/commentPrinter";
+import { TextRenderer } from "./utils/formatters/textRenderer";
 
 program
     .command('find')
@@ -18,16 +18,11 @@ program
     .option('-q, --query <query>', 'non-interactive query')
     .option('-r, --raw', 'print raw json')
     .option('-m, --max <max>', 'limit number of issues shown')
-    .option('-f, --fields <field>', 'which fields to display', function (field, fields = []) {
-        fields.push(field);
-        return fields;
-    })
     .action((...args) => {
         const cmd = args.pop();
-        let fields = [...(cmd.fields || []), ...args];
-        if (fields.length === 0) {
-            fields = ['summary', 'Priority', 'Type', 'State'];
-        }
+        // TODO: fetch more issue fields and display them too
+        // const fields = ['summary', 'Priority', 'Type', 'State'];
+        const fields = ['summary', 'description'];
         const filterOptions: any = {};
         if (cmd.max && cmd.max > 0) {
             filterOptions.max = cmd.max;
@@ -46,22 +41,19 @@ program
                 if (args.raw) {
                     RawPrinter.print(issue);
                 } else {
-                    if (issue.field) {
+                    if (issue.fields) {
+                        const fields = formatIssueFields(issue.fields, ['description']);
 
-                        const fields = formatIssueFields(issue.field, ['description']);
+                        TablePrinter.print(fields, ['name', 'value'], { 1: { width: 80 } });
 
-                        TablePrinter.print(fields, ['name', 'value'], {1: {width: 80}});
-
-                        const descriptionField = issue.field.find(f => f.name === 'description');
-                        if (descriptionField && typeof descriptionField.value === "string") {
-                            console.log(chalk.bold(chalk.gray(chalk.underline('description:\n'))));
-                            console.log(`${TextRenderer.render(descriptionField.value)}\n`);
-                        }
+                        console.log(chalk.bold(chalk.gray(chalk.underline('description:\n'))));
+                        console.log(`${TextRenderer.render(issue.description || '-')}\n`);
                     }
-                    if (issue.comment && issue.comment.length > 0) {
-                        console.log(chalk.bold(chalk.gray(chalk.underline('comments:\n'))));
-
-                        CommentPrinter.printComments(issue.comment, false);
+                    console.log(chalk.bold(chalk.gray(chalk.underline('comments:\n'))));
+                    if (issue.comments && issue.comments.length > 0) {
+                        CommentPrinter.printComments(issue.comments, false);
+                    } else {
+                        console.log('-')
                     }
                 }
             }).catch(printError);

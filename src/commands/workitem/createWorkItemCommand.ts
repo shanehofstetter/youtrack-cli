@@ -1,15 +1,15 @@
-import {YoutrackCliCommand} from "../command";
-import {actionWrapper} from "../../utils/commander";
+import { YoutrackCliCommand } from "../command";
+import { actionWrapper } from "../../utils/commander";
 import chalk from "chalk";
 import * as inquirer from "inquirer";
-import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
-import {RawPrinter, TablePrinter} from "../../utils/printer";
-import {printError} from "../../utils/errorHandler";
-import {getLocaleDateFormat, parseDateWithLocale} from "../../utils/locale";
-import {DurationParser} from "../../utils/parsers/duration";
-import {youtrackConfig} from "../../utils/youtrackConfig";
-import {BaseWorkItemCommand} from "./baseWorkItemCommand";
-import {YoutrackClient} from "youtrack-rest-client";
+import { WorkItem } from "youtrack-rest-client/dist/entities/workItem";
+import { RawPrinter, TablePrinter } from "../../utils/printer";
+import { printError } from "../../utils/errorHandler";
+import { getLocaleDateFormat, parseDateWithLocale } from "../../utils/locale";
+import { DurationParser } from "../../utils/parsers/duration";
+import { youtrackConfig } from "../../utils/youtrackConfig";
+import { BaseWorkItemCommand } from "./baseWorkItemCommand";
+import { YoutrackClient } from "youtrack-rest-client";
 
 const moment = require('moment');
 
@@ -31,11 +31,7 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                         return issueId;
 
                     }
-                    const summaryField = this.issue.field.find(f => f.name === 'summary');
-                    if (!summaryField) {
-                        return issueId;
-                    }
-                    return `${issueId} (${summaryField.value})`
+                    return `${issueId} (${this.issue.summary})`
                 }
             },
             {
@@ -72,10 +68,10 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                 name: 'worktype',
                 message: 'Work-Type:',
                 choices: () => {
-                    return this.workTypeNames;
+                    return this.workItemTypes.map(w => <string>w.name);
                 },
                 when: () => {
-                    return this.workTypeNames.length > 0;
+                    return this.workItemTypes.length > 0;
                 }
             },
             {
@@ -83,7 +79,7 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
                 name: 'worktype',
                 message: 'Work-Type:',
                 when: () => {
-                    return this.workTypeNames.length === 0;
+                    return this.workItemTypes.length === 0;
                 }
             }
         ]
@@ -115,20 +111,23 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
     }
 
     private createWorkItem(client: YoutrackClient, workItemParams: any) {
+        const workItemType = this.workItemTypes.find(w => w.name === workItemParams.worktype);
         const workItem: WorkItem = {
-            duration: new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(workItemParams.duration),
-            description: workItemParams.description,
+            duration: {
+                minutes: new DurationParser(youtrackConfig.getTimeTrackingConfig()).parseDuration(workItemParams.duration)
+            },
+            text: workItemParams.description,
             date: parseDateWithLocale(workItemParams.date, this.locale).toDate().getTime(),
-            worktype: {
-                name: workItemParams.worktype
+            type: {
+                id: workItemType && workItemType.id,
             }
         };
 
-        return client.workItems.create(workItemParams.issueId, workItem).then(workItemId => {
+        return client.workItems.create(workItemParams.issueId, workItem).then(workItem => {
             if (this.raw) {
-                return RawPrinter.print(workItemId);
+                return RawPrinter.print(workItem);
             }
-            TablePrinter.print([{workItemId}], ['workItemId']);
+            TablePrinter.print([workItem], ['id']);
         }).catch(printError);
     }
 }
