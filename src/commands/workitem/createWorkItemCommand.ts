@@ -101,7 +101,9 @@ export class CreateWorkItemCommand extends BaseWorkItemCommand implements Youtra
             this.youtrackClient = client;
 
             if (this.areAllParametersGiven()) {
-                return this.createWorkItem(client, this.workItemParameters);
+                return this.validateIssueIdAndFetchWorkTypes(this.workItemParameters.issueId).then(() => {
+                    return this.createWorkItem(client, this.workItemParameters);
+                })
             }
 
             return inquirer.prompt(this.getQueryPrompt()).then((answers: any) => {
