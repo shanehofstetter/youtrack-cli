@@ -1,12 +1,12 @@
-import {Issue, YoutrackClient} from "youtrack-rest-client";
+import { Issue, WorkItemType, YoutrackClient } from "youtrack-rest-client";
 import chalk from "chalk";
-import {getFormattedErrorMessage} from "../../utils/errorHandler";
+import { getFormattedErrorMessage } from "../../utils/errorHandler";
 
 const osLocale = require('os-locale');
 
 export abstract class BaseWorkItemCommand {
 
-    protected workTypeNames: string[] = [];
+    protected workItemTypes: WorkItemType[] = [];
     protected locale: string = "en-US";
     protected youtrackClient: YoutrackClient | null = null;
     protected issue: Issue | null = null;
@@ -19,15 +19,11 @@ export abstract class BaseWorkItemCommand {
                 this.issue = issue;
 
                 if (this.youtrackClient) {
-                    let projectShortName: any = issue.field.find(f => f.name === 'projectShortName');
-                    if (projectShortName && typeof projectShortName.value === 'string') {
-                        projectShortName = projectShortName.value;
-
-                        const workTypesUrl: string = '/admin/project/' + projectShortName + '/timetracking/worktype';
+                    let projectShortName = issue.project && issue.project.id;
+                    if (projectShortName) {
+                        const workTypesUrl: string = '/admin/projects/' + projectShortName + '/timeTrackingSettings/workItemTypes?fields=id,name';
                         return this.youtrackClient.get(workTypesUrl).then((response) => {
-                            if (response.length > 0) {
-                                this.workTypeNames = response.map((wt: any) => wt.name);
-                            }
+                            if (response.length > 0) this.workItemTypes = response;
                         }).catch(error => {
                             this.issue = null;
                             return Promise.reject(getFormattedErrorMessage(error));

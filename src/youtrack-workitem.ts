@@ -1,12 +1,11 @@
 import * as program from "commander";
-import {actionWrapper, startCommander} from "./utils/commander";
-import {printObject, RawPrinter, toDateString} from "./utils/printer";
-import {WorkItem} from "youtrack-rest-client/dist/entities/workItem";
-import {printError} from "./utils/errorHandler";
-import {formatDuration} from "./utils/formatters/durationFormatter";
-import {CreateWorkItemCommand} from "./commands/workitem/createWorkItemCommand";
-import {DeleteWorkItemCommand} from "./commands/workitem/deleteWorkItemCommand";
-import {EditWorkItemCommand} from "./commands/workitem/editWorkItemCommand";
+import { actionWrapper, startCommander } from "./utils/commander";
+import { printObject, RawPrinter, toDateString } from "./utils/printer";
+import { WorkItem } from "youtrack-rest-client/dist/entities/workItem";
+import { printError } from "./utils/errorHandler";
+import { CreateWorkItemCommand } from "./commands/workitem/createWorkItemCommand";
+import { DeleteWorkItemCommand } from "./commands/workitem/deleteWorkItemCommand";
+import { EditWorkItemCommand } from "./commands/workitem/editWorkItemCommand";
 
 program
     .command('list <issueId>')
@@ -21,13 +20,13 @@ program
                     return RawPrinter.print(workItems);
                 }
 
-                const formattedWorkItems = workItems.sort((a, b) => a.date - b.date).map(workItem => {
-                    const formattedWorkItem: any = {...workItem, date: toDateString(workItem.date, false)};
+                const formattedWorkItems = workItems.sort((a, b) => <number>a.date - <number>b.date).map(workItem => {
+                    const formattedWorkItem: any = { ...workItem, date: toDateString(<number>workItem.date, false) };
                     if (workItem.author) {
                         formattedWorkItem.author = workItem.author.login;
                     }
-                    formattedWorkItem.worktype = workItem.worktype ? workItem.worktype.name : '';
-                    formattedWorkItem.duration = formatDuration(workItem.duration);
+                    formattedWorkItem.worktype = workItem.type ? workItem.type.name : '';
+                    formattedWorkItem.duration = workItem.duration && workItem.duration.presentation;
                     return formattedWorkItem;
                 });
 

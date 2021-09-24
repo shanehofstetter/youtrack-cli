@@ -1,8 +1,8 @@
-import {YoutrackCliCommand} from "../command";
-import {YoutrackClient} from "youtrack-rest-client";
+import { YoutrackCliCommand } from "../command";
+import { YoutrackClient } from "youtrack-rest-client";
 import chalk from "chalk";
-import {actionWrapper} from "../../utils/commander";
-import {printError} from "../../utils/errorHandler";
+import { actionWrapper } from "../../utils/commander";
+import { printError } from "../../utils/errorHandler";
 import * as inquirer from "inquirer";
 
 export class CreateCommentCommand implements YoutrackCliCommand {
@@ -14,11 +14,8 @@ export class CreateCommentCommand implements YoutrackCliCommand {
                 name: 'issueId',
                 message: 'Issue ID:',
                 validate: (issueId: any) => {
-                    return client.issues.exists(issueId).then(exists => {
-                        if (!exists) {
-                            return chalk.red(`issue ${issueId} does not exist`);
-                        }
-                        return true;
+                    return client.issues.byId(issueId).then(issue => true).catch(() => {
+                        return chalk.red(`issue ${issueId} does not exist`);
                     });
                 }
             },
@@ -48,7 +45,7 @@ export class CreateCommentCommand implements YoutrackCliCommand {
     }
 
     private createComment(client: YoutrackClient, issueId: string, comment: string): Promise<any> {
-        return client.comments.create(issueId, comment).then(() => {
+        return client.comments.create(issueId, { text: comment }).then(() => {
             console.log(chalk.green(`comment created.`))
         }).catch(printError);
     }

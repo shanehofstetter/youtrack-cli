@@ -1,8 +1,8 @@
-import {YoutrackCliCommand} from "../command";
+import { YoutrackCliCommand } from "../command";
 import chalk from "chalk";
-import {actionWrapper} from "../../utils/commander";
+import { actionWrapper } from "../../utils/commander";
 import * as inquirer from "inquirer";
-import {printError} from "../../utils/errorHandler";
+import { printError } from "../../utils/errorHandler";
 
 export class DeleteWorkItemCommand implements YoutrackCliCommand {
 

@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import * as inquirer from "inquirer";
-import {Youtrack, YoutrackClient} from "youtrack-rest-client";
-import {configStore} from "../utils/configStore";
-import {CredentialStore} from "../utils/credentialStore";
-import {getFormattedErrorMessage} from "../utils/errorHandler";
-import {youtrackConfig} from "../utils/youtrackConfig";
-import {YoutrackCliCommand} from "./command";
+import { Youtrack, YoutrackClient } from "youtrack-rest-client";
+import { configStore } from "../utils/configStore";
+import { CredentialStore } from "../utils/credentialStore";
+import { getFormattedErrorMessage } from "../utils/errorHandler";
+import { youtrackConfig } from "../utils/youtrackConfig";
+import { YoutrackCliCommand } from "./command";
 
 // tslint:disable-next-line
 const validUrl = require('valid-url');
@@ -124,15 +124,10 @@ export class SetupCommand implements YoutrackCliCommand {
                 console.error(chalk.red('configuration seems to be invalid. try to run setup again.'));
                 return Promise.reject();
             }
-            return new Youtrack(config).login().then((client) => {
-                if ("password" in config) {
-                    console.log(chalk.green('login successful.'));
-                    return Promise.resolve(client);
-                }
-                return client.users.current().then(() => {
-                    console.log(chalk.green('authentication was successful.'));
-                    return Promise.resolve(client);
-                });
+            const client = new Youtrack(config);
+            return client.users.current().then(() => {
+                console.log(chalk.green('authentication was successful.'));
+                return Promise.resolve(client);
             });
         }).catch((error) => {
             console.error(chalk.red('problem occurred while connecting to youtrack:', getFormattedErrorMessage(error)));

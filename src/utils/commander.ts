@@ -1,10 +1,10 @@
 import chalk from "chalk";
-import {Command} from "commander";
 import * as program from "commander";
-import {YoutrackClient} from "youtrack-rest-client/dist/youtrack";
-import {CredentialStore} from "./credentialStore";
-import {printError} from "./errorHandler";
-import {YoutrackConfig} from "./youtrackConfig";
+import { Command } from "commander";
+import { YoutrackClient } from "youtrack-rest-client/dist/youtrack";
+import { CredentialStore } from "./credentialStore";
+import { printError } from "./errorHandler";
+import { YoutrackConfig } from "./youtrackConfig";
 
 export function startCommander(knownSubCommands: string[] = []): Command {
 

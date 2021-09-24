@@ -1,8 +1,8 @@
 import * as program from "commander";
-import {actionWrapper, startCommander} from "./utils/commander";
-import {User} from "youtrack-rest-client/dist/entities/user";
-import {printObject} from "./utils/printer";
-import {printError} from "./utils/errorHandler";
+import { actionWrapper, startCommander } from "./utils/commander";
+import { User } from "youtrack-rest-client/dist/entities/user";
+import { printObject } from "./utils/printer";
+import { printError } from "./utils/errorHandler";
 
 const userColumnConfig = {
     0: {
@@ -36,7 +36,7 @@ program
     .option('-r, --raw', 'print raw json')
     .action((login, args) => {
         return actionWrapper((client) => {
-            return client.users.byName(login).then((user: User) => {
+            return client.users.byId(login).then((user: User) => {
                 printObject(user, {
                     raw: args.raw, columnConfig: userColumnConfig, attributes: visibleUserAttributes
                 });
