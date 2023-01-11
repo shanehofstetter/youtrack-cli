@@ -5,6 +5,8 @@ Command Line Tool for interacting with youtrack
 ![npm](https://img.shields.io/npm/v/youtrack-cli.svg)
 ![NpmLicense](https://img.shields.io/npm/l/youtrack-cli.svg)
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?business=PB26QWEQQ3RE4&no_recurring=0&item_name=Support+my+open+source+work+on+github+%E2%9D%A4%EF%B8%8F&currency_code=USD)
+
 ## Install
 ```
 npm install -g youtrack-cli
